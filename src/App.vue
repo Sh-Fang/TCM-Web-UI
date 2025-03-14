@@ -12,12 +12,27 @@ export default {
 </script>
 
 <style>
-.app-container {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  height: 100vh;
+  background-color: #f8fafc;
+}
+
+.app-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+#app {
+  min-height: 100vh;
   width: 100%;
 }
 </style>

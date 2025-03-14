@@ -103,7 +103,7 @@
             password: this.password
           })
           .then(() => {
-            this.$router.push('/dashboard');
+            this.$router.push('/graph-visualization');
           })
           .catch(error => {
             this.errors = { general: error.message };
