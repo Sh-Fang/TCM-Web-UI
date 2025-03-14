@@ -28,8 +28,9 @@ export default createStore({
       commit('SET_USER', mockUser)
       return mockUser
     },
-    logout({ commit }) {
+    async logout({ commit }) {
       commit('SET_USER', null)
+      return Promise.resolve()
     }
   },
   getters: {

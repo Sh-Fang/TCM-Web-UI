@@ -160,12 +160,12 @@ export default {
     },
     handleLogout() {
       this.showLogoutConfirm = false;
-      this.$store.dispatch('auth/logout')
+      this.$store.dispatch('logout')
         .then(() => {
           this.$router.push('/login');
         })
         .catch(error => {
-          console.error('Logout failed:', error);
+          console.error('退出登录失败:', error);
         });
     }
   }
