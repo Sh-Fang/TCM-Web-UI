@@ -117,6 +117,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'ProfilePage',
   data() {
@@ -124,8 +126,8 @@ export default {
       isEditing: false,
       isPasswordEditing: false,
       userInfo: {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
+        name: '',
+        email: '',
         phone: '+86 123 4567 8900',
         bio: '热爱技术，专注于图数据库和子图匹配研究。'
       },
@@ -136,11 +138,30 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      userData: state => state.user.userData
+    })
+  },
+  watch: {
+    userData: {
+      immediate: true,
+      handler(newValue) {
+        if (newValue) {
+          this.userInfo.name = newValue.name || ''
+          this.userInfo.email = newValue.email || ''
+        }
+      }
+    }
+  },
   methods: {
     toggleEdit() {
       if (this.isEditing) {
         // 保存更改
-        console.log('保存个人信息:', this.userInfo)
+        this.$store.dispatch('user/updateUserProfile', {
+          name: this.userInfo.name,
+          email: this.userInfo.email
+        })
       }
       this.isEditing = !this.isEditing
     },

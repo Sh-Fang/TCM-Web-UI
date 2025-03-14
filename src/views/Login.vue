@@ -56,6 +56,9 @@
   </template>
   
   <script>
+  import axios from 'axios';
+  import { useToast } from 'vue-toastification';
+
   export default {
     name: 'LoginPage',
     data() {
@@ -74,6 +77,7 @@
     methods: {
       async handleLogin() {
         this.errors = {};
+        const toast = useToast();  // 初始化 Toast 实例
         
         // 验证表单
         if (!this.email) {
@@ -86,14 +90,46 @@
         }
 
         try {
-          await this.$store.dispatch('login', {
-            username: this.email,
+          const response = await axios.post('http://localhost:8082/login', {
+            email: this.email,
             password: this.password
           });
-          this.$router.push('/graph-visualization');
+
+          console.log(response);
+
+          if (response.status === 200) {
+            // 登录成功后，将用户数据存储到 Vuex store
+            const userData = {
+              name: response.data.user.name || this.email,  // 如果后端没有返回名字，使用邮箱作为名字
+              email: this.email
+            };
+            await this.$store.dispatch('login', userData);
+            this.$router.push('/graph-visualization');
+          } else {
+            toast.error('登录失败，请检查用户名和密码');
+            this.errors = { general: '登录失败，请检查用户名和密码' };
+          }
         } catch (error) {
-          this.errors = { general: '登录失败，请检查用户名和密码' };
+          if (error.response) {
+            // 请求已发出，且服务器返回了响应（非 2xx 状态码）
+            if (error.response.status === 401) {
+              toast.error('用户名或密码错误');
+              this.errors = { general: '用户名或密码错误' };
+            } else {
+              toast.error('系统繁忙，请稍后重试');
+              this.errors = { general: '系统繁忙，请稍后重试' };
+            }
+          } else if (error.request) {
+            // 请求已发出，但没有收到响应
+            toast.error('请求未收到响应，请稍后重试');
+            this.errors = { general: '请求未收到响应，请稍后重试' };
+          } else {
+            // 发生了其他错误
+            toast.error('系统错误，请稍后重试');
+            this.errors = { general: '系统错误，请稍后重试' };
+          }
         }
+
       }
     }
   }

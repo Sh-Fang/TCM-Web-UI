@@ -86,6 +86,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { useToast } from 'vue-toastification';
+
 export default {
   name: 'RegisterPage',
   data() {
@@ -100,7 +103,7 @@ export default {
   methods: {
     async handleRegister() {
       this.errors = {};
-      
+      const toast = useToast();  // 初始化 Toast 实例
       // 验证表单
       if (!this.name) {
         this.errors.name = '请输入用户名';
@@ -124,19 +127,28 @@ export default {
       }
 
       try {
-        await this.$store.dispatch('register', {
-          username: this.name,
+        const response = await axios.post('http://localhost:8082/register', {
+          name: this.name,
+          email: this.email,
           password: this.password
         });
-        this.$router.push({
-          path: '/login',
-          query: {
-            email: this.email,
-            password: this.password
-          }
-        });
+
+        if (response.status === 200) {
+          await this.$store.dispatch('register', response.data);
+          this.$router.push({
+            path: '/login',
+            query: {
+              email: this.email,
+              password: this.password
+            }
+          });
+        } else {
+          this.errors = { general: '注册失败，请稍后重试' };
+          toast.error('注册失败，请稍后重试');
+        }
       } catch (error) {
-        this.errors = { general: '注册失败，请稍后重试' };
+        this.errors = { general: '注册失败，请稍后重试' }; 
+        toast.error('注册失败，请稍后重试');
       }
     }
   }
