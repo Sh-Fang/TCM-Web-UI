@@ -74,21 +74,6 @@
         </button>
       </form>
       
-      <div class="auth-divider">
-        <span>或使用以下方式注册</span>
-      </div>
-      
-      <div class="social-auth">
-        <button class="btn-social google">
-          <font-awesome-icon icon="google" class="social-icon" />
-          <span>Google</span>
-        </button>
-        <button class="btn-social github">
-          <font-awesome-icon icon="github" class="social-icon" />
-          <span>GitHub</span>
-        </button>
-      </div>
-      
       <p class="auth-redirect">
         已有账号？ 
         <router-link to="/login">
@@ -113,58 +98,45 @@ export default {
     }
   },
   methods: {
-    handleRegister() {
+    async handleRegister() {
       this.errors = {};
       
-      // 验证用户名
+      // 验证表单
       if (!this.name) {
-        this.errors.name = '用户名不能为空';
-      } else if (this.name.length < 2) {
-        this.errors.name = '用户名至少需要2个字符';
-      } else if (this.name.length > 20) {
+        this.errors.name = '请输入用户名';
+        return;
+      }
+      if (this.name.length > 20) {
         this.errors.name = '用户名不能超过20个字符';
+        return;
       }
-      
-      // 验证邮箱
       if (!this.email) {
-        this.errors.email = '邮箱不能为空';
-      } else if (!/\S+@\S+\.\S+/.test(this.email)) {
-        this.errors.email = '请输入有效的邮箱地址';
+        this.errors.email = '请输入邮箱';
+        return;
       }
-      
-      // 验证密码
       if (!this.password) {
-        this.errors.password = '密码不能为空';
-      } else if (this.password.length < 6) {
-        this.errors.password = '密码至少需要6个字符';
+        this.errors.password = '请输入密码';
+        return;
       }
-      
-      // 验证确认密码
-      if (!this.confirmPassword) {
-        this.errors.confirmPassword = '请确认密码';
-      } else if (this.password !== this.confirmPassword) {
+      if (this.password !== this.confirmPassword) {
         this.errors.confirmPassword = '两次输入的密码不一致';
+        return;
       }
-      
-      if (Object.keys(this.errors).length === 0) {
-        // 提交注册表单
-        this.$store.dispatch('auth/register', {
-          name: this.name,
-          email: this.email,
+
+      try {
+        await this.$store.dispatch('register', {
+          username: this.name,
           password: this.password
-        })
-        .then(() => {
-          this.$router.push({
-            path: '/login',
-            query: {
-              email: this.email,
-              password: this.password
-            }
-          });
-        })
-        .catch(error => {
-          this.errors = { general: error.message };
         });
+        this.$router.push({
+          path: '/login',
+          query: {
+            email: this.email,
+            password: this.password
+          }
+        });
+      } catch (error) {
+        this.errors = { general: '注册失败，请稍后重试' };
       }
     }
   }
@@ -272,77 +244,11 @@ export default {
   background-color: #2563eb;
 }
 
-.auth-divider {
-  position: relative;
-  text-align: center;
-  margin: 1.5rem 0;
-}
-
-.auth-divider::before,
-.auth-divider::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 45%;
-  height: 1px;
-  background-color: #e5e7eb;
-}
-
-.auth-divider::before {
-  left: 0;
-}
-
-.auth-divider::after {
-  right: 0;
-}
-
-.auth-divider span {
-  background-color: white;
-  padding: 0 10px;
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
-.social-auth {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.btn-social {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background-color: white;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.social-icon {
-  font-size: 1.2rem;
-}
-
-.btn-social.google {
-  color: #ea4335;
-}
-
-.btn-social.github {
-  color: #24292e;
-}
-
-.btn-social:hover {
-  background-color: #f9fafb;
-}
-
 .auth-redirect {
   text-align: center;
   font-size: 0.875rem;
   color: #6b7280;
+  margin-top: 1.5rem;
 }
 
 .auth-redirect a {

@@ -4,14 +4,14 @@
       <div class="auth-card">
         <div class="auth-header">
           <font-awesome-icon icon="project-diagram" class="auth-logo" />
-          <h1>Sign In</h1>
+          <h1>登录</h1>
         </div>
         
         <form @submit.prevent="handleLogin" class="auth-form">
           <div class="form-group">
             <label for="email">
               <font-awesome-icon icon="envelope" class="input-icon" />
-              Email
+              邮箱
             </label>
             <input 
               type="email" 
@@ -26,7 +26,7 @@
           <div class="form-group">
             <label for="password">
               <font-awesome-icon icon="lock" class="input-icon" />
-              Password
+              密码
             </label>
             <input 
               type="password" 
@@ -40,30 +40,15 @@
           
           <button type="submit" class="btn-primary">
             <font-awesome-icon icon="sign-in-alt" class="btn-icon" />
-            Sign In
+            登录
           </button>
         </form>
         
-        <div class="auth-divider">
-          <span>or continue with</span>
-        </div>
-        
-        <div class="social-auth">
-          <button class="btn-social google">
-            <font-awesome-icon icon="google" class="social-icon" />
-            <span>Google</span>
-          </button>
-          <button class="btn-social github">
-            <font-awesome-icon icon="github" class="social-icon" />
-            <span>GitHub</span>
-          </button>
-        </div>
-        
         <p class="auth-redirect">
-          Don't have an account? 
+          还没有账号？ 
           <router-link to="/register">
             <font-awesome-icon icon="user-plus" class="link-icon" />
-            Register
+            注册
           </router-link>
         </p>
       </div>
@@ -87,33 +72,27 @@
       if (password) this.password = password;
     },
     methods: {
-      handleLogin() {
+      async handleLogin() {
         this.errors = {};
         
+        // 验证表单
         if (!this.email) {
-          this.errors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(this.email)) {
-          this.errors.email = 'Please enter a valid email address';
+          this.errors.email = '请输入邮箱';
+          return;
         }
-        
         if (!this.password) {
-          this.errors.password = 'Password is required';
-        } else if (this.password.length < 6) {
-          this.errors.password = 'Password must be at least 6 characters';
+          this.errors.password = '请输入密码';
+          return;
         }
-        
-        if (Object.keys(this.errors).length === 0) {
-          // Submit the form
-          this.$store.dispatch('auth/login', {
-            email: this.email,
+
+        try {
+          await this.$store.dispatch('login', {
+            username: this.email,
             password: this.password
-          })
-          .then(() => {
-            this.$router.push('/graph-visualization');
-          })
-          .catch(error => {
-            this.errors = { general: error.message };
           });
+          this.$router.push('/graph-visualization');
+        } catch (error) {
+          this.errors = { general: '登录失败，请检查用户名和密码' };
         }
       }
     }
@@ -292,6 +271,7 @@
     text-align: center;
     font-size: 0.875rem;
     color: #6b7280;
+    margin-top: 1.5rem;
   }
   
   .auth-redirect a {

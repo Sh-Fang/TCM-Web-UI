@@ -2,66 +2,38 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    user: null,
-    isAuthenticated: false
+    user: null
   },
   mutations: {
     SET_USER(state, user) {
       state.user = user
-      state.isAuthenticated = !!user
     }
   },
   actions: {
-    login({ commit }, credentials) {
-      // This would typically be an API call
-      return new Promise((resolve) => {
-        // Simulate API call
-        setTimeout(() => {
-          const user = {
-            id: 1,
-            name: 'John Doe',
-            email: credentials.email
-          }
-          commit('SET_USER', user)
-          resolve(user)
-        }, 1000)
-      })
+    async login({ commit }, credentials) {
+      // 模拟登录成功
+      const mockUser = {
+        username: credentials.username,
+        email: credentials.username
+      }
+      commit('SET_USER', mockUser)
+      return mockUser
     },
-    register({ commit }, userData) {
-      // This would typically be an API call
-      return new Promise((resolve) => {
-        // Simulate API call
-        setTimeout(() => {
-          const user = {
-            id: 1,
-            name: userData.name,
-            email: userData.email
-          }
-          commit('SET_USER', user)
-          resolve(user)
-        }, 1000)
-      })
+    async register({ commit }, userData) {
+      // 模拟注册成功
+      const mockUser = {
+        username: userData.username,
+        email: userData.username
+      }
+      commit('SET_USER', mockUser)
+      return mockUser
     },
     logout({ commit }) {
       commit('SET_USER', null)
     }
   },
-  modules: {
-    auth: {
-      namespaced: true,
-      state: () => ({}),
-      mutations: {},
-      actions: {
-        login(context, credentials) {
-          return context.dispatch('login', credentials, { root: true })
-        },
-        register(context, userData) {
-          return context.dispatch('register', userData, { root: true })
-        },
-        logout(context) {
-          return context.dispatch('logout', null, { root: true })
-        }
-      }
-    }
+  getters: {
+    isAuthenticated: state => !!state.user,
+    currentUser: state => state.user
   }
 })

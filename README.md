@@ -6,7 +6,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js-16.x-339933?logo=node.js)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-一个基于 Vue.js 3 开发的现代化图数据库子图匹配应用，提供直观的可视化界面和强大的分析功能。
+一个基于 Vue.js 3 开发的现代化图数据库子图匹配应用，提供直观的可视化界面和强大的分析功能。（整个项目使用Cursor开发）
 
 [在线演示](https://your-demo-url.com) · [问题反馈](https://github.com/your-username/subgraph-matching-app/issues)
 
