@@ -27,6 +27,21 @@ export default createStore({
         }, 1000)
       })
     },
+    register({ commit }, userData) {
+      // This would typically be an API call
+      return new Promise((resolve) => {
+        // Simulate API call
+        setTimeout(() => {
+          const user = {
+            id: 1,
+            name: userData.name,
+            email: userData.email
+          }
+          commit('SET_USER', user)
+          resolve(user)
+        }, 1000)
+      })
+    },
     logout({ commit }) {
       commit('SET_USER', null)
     }
@@ -39,6 +54,9 @@ export default createStore({
       actions: {
         login(context, credentials) {
           return context.dispatch('login', credentials, { root: true })
+        },
+        register(context, userData) {
+          return context.dispatch('register', userData, { root: true })
         },
         logout(context) {
           return context.dispatch('logout', null, { root: true })

@@ -33,10 +33,26 @@
         <button class="collapse-btn" @click="toggleSidebar">
           <font-awesome-icon :icon="isSidebarCollapsed ? 'chevron-right' : 'chevron-left'" class="collapse-icon" />
         </button>
-        <button class="logout-btn" @click="handleLogout">
+        <button class="logout-btn" @click="confirmLogout">
           <font-awesome-icon icon="sign-out-alt" class="nav-icon" />
           <span v-if="!isSidebarCollapsed">Logout</span>
         </button>
+      </div>
+    </div>
+
+    <!-- 退出登录确认对话框 -->
+    <div v-if="showLogoutConfirm" class="confirm-dialog-overlay" @click="showLogoutConfirm = false">
+      <div class="confirm-dialog" @click.stop>
+        <div class="confirm-dialog-header">
+          <h3>确认退出</h3>
+        </div>
+        <div class="confirm-dialog-content">
+          <p>您确定要退出登录吗？</p>
+        </div>
+        <div class="confirm-dialog-footer">
+          <button class="btn-cancel" @click="showLogoutConfirm = false">取消</button>
+          <button class="btn-confirm" @click="handleLogout">确认退出</button>
+        </div>
       </div>
     </div>
 
@@ -76,7 +92,7 @@
                 <span>设置</span>
               </button>
               <div class="menu-divider"></div>
-              <button class="menu-item logout" @click="handleLogout">
+              <button class="menu-item logout" @click="confirmLogout">
                 <font-awesome-icon icon="sign-out-alt" class="menu-icon" />
                 <span>退出登录</span>
               </button>
@@ -100,6 +116,7 @@ export default {
       isSidebarCollapsed: false,
       currentPageTitle: 'Dashboard',
       isUserMenuOpen: false,
+      showLogoutConfirm: false,
       userInfo: {
         name: 'John Doe',
         email: 'john.doe@example.com'
@@ -138,7 +155,11 @@ export default {
       this.isUserMenuOpen = false;
       this.$router.push('/settings');
     },
+    confirmLogout() {
+      this.showLogoutConfirm = true;
+    },
     handleLogout() {
+      this.showLogoutConfirm = false;
       this.$store.dispatch('auth/logout')
         .then(() => {
           this.$router.push('/login');
@@ -444,5 +465,84 @@ export default {
 .menu-item.logout:hover {
   background-color: #fee2e2;
   color: #dc2626;
+}
+
+/* 确认对话框样式 */
+.confirm-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.confirm-dialog {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-width: 90%;
+  overflow: hidden;
+}
+
+.confirm-dialog-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.confirm-dialog-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.confirm-dialog-content {
+  padding: 1.5rem;
+  color: #4b5563;
+}
+
+.confirm-dialog-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-cancel {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: white;
+  color: #4b5563;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.btn-confirm {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: #ef4444;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-confirm:hover {
+  background-color: #dc2626;
 }
 </style> 

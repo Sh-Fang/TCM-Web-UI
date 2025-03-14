@@ -80,6 +80,12 @@
         errors: {}
       }
     },
+    created() {
+      // 从路由参数中获取邮箱和密码
+      const { email, password } = this.$route.query;
+      if (email) this.email = email;
+      if (password) this.password = password;
+    },
     methods: {
       handleLogin() {
         this.errors = {};
