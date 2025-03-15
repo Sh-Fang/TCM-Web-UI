@@ -37,6 +37,16 @@
             >
             <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
           </div>
+
+          <div class="form-group remember-me">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                v-model="rememberMe"
+              >
+              <span class="checkbox-text">记住邮箱和密码</span>
+            </label>
+          </div>
           
           <button type="submit" class="btn-primary">
             <font-awesome-icon icon="sign-in-alt" class="btn-icon" />
@@ -65,6 +75,7 @@
       return {
         email: '',
         password: '',
+        rememberMe: false,
         errors: {}
       }
     },
@@ -73,6 +84,15 @@
       const { email, password } = this.$route.query;
       if (email) this.email = email;
       if (password) this.password = password;
+
+      // 尝试从 localStorage 获取保存的凭据
+      const savedCredentials = localStorage.getItem('userCredentials');
+      if (savedCredentials) {
+        const { email, password } = JSON.parse(savedCredentials);
+        this.email = email;
+        this.password = password;
+        this.rememberMe = true;
+      }
     },
     methods: {
       async handleLogin() {
@@ -95,8 +115,18 @@
             password: this.password
           });
 
-
           if (response.status === 200) {
+            // 如果用户选择了"记住我"，保存凭据到 localStorage
+            if (this.rememberMe) {
+              localStorage.setItem('userCredentials', JSON.stringify({
+                email: this.email,
+                password: this.password
+              }));
+            } else {
+              // 如果没有选择"记住我"，清除之前保存的凭据
+              localStorage.removeItem('userCredentials');
+            }
+
             // 登录成功后，将用户数据存储到 Vuex store
             const userData = {
               name: response.data.user.name || this.email,  // 如果后端没有返回名字，使用邮箱作为名字
@@ -326,5 +356,29 @@
   
   .auth-redirect a:hover {
     text-decoration: underline;
+  }
+
+  .remember-me {
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .checkbox-text {
+    color: #4b5563;
+    font-size: 0.875rem;
   }
   </style>
