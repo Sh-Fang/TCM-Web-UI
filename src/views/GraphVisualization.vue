@@ -110,7 +110,7 @@
     <!-- 可视化区域 -->
     <div class="visualization-container">
       <!-- 数据图可视化区域 -->
-      <div v-if="activeTab === 'data' && dataGraphVisualized" class="graph-display">
+      <div v-if="activeTab === 'data'" class="graph-display">
         <div id="data-graph-container" class="graph-canvas">
           <!-- 这里将由您实现数据图可视化 -->
         </div>
@@ -150,9 +150,14 @@ export default {
       
       // 解析后的图数据（将由您实现解析逻辑）
       parsedDataGraph: null,
-      parsedQueryGraph: null
+      parsedQueryGraph: null,
+
+      graph: null
     }
   },
+  mounted() {
+    this.initGraph();
+    },
   methods: {
     /**
      * 触发数据图文件选择
@@ -339,6 +344,74 @@ export default {
         }
       });
     },
+
+    /** 
+     * 初始化图
+     */
+    initGraph() {
+      const container = document.getElementById("data-graph-container");
+      const width = container.offsetWidth;
+      const height = container.offsetHeight;
+
+      // 图数据
+      const data = {
+        nodes: [
+          {
+            id: "node1",
+            label: "Circle1",
+            x: 150,
+            y: 150
+          },
+          {
+            id: "node2",
+            label: "Circle2",
+            x: 400,
+            y: 150
+          }
+        ],
+        edges: [
+          {
+            source: "node1",
+            target: "node2"
+          }
+        ]
+      };
+
+      // 创建图实例
+      this.graph = new window.G6.Graph({
+        container: "data-graph-container",
+        width: width,
+        height: height,
+        defaultNode: {
+          shape: "circle",
+          size: [100],
+          color: "#5B8FF9",
+          style: {
+            fill: "#9EC9FF",
+            lineWidth: 3
+          },
+          labelCfg: {
+            style: {
+              fill: "#fff",
+              fontSize: 20
+            }
+          }
+        },
+        defaultEdge: {
+          style: {
+            stroke: "#e2e2e2"
+          }
+        }
+      });
+
+
+      this.graph.data(data);
+      this.graph.render();
+
+      // 让图表自动缩放适应容器
+      this.graph.fitView();
+    },
+    
     
     /**
      * 可视化查询图

@@ -21,6 +21,11 @@ const routes = [
     component: Register
   },
   {
+    path: '/graph',  // 设置访问路径
+    name: 'GraphDemo',
+    component: () => import('../views/test.vue')
+  },
+  {
     path: '/',
     component: Dashboard,
     children: [
