@@ -12,23 +12,13 @@ export default createStore({
     }
   },
   actions: {
-    async login({ commit }, credentials) {
-      // 模拟登录成功
-      const mockUser = {
-        name: credentials.email,
-        email: credentials.email
-      }
-      commit('SET_USER_DATA', mockUser)
-      return mockUser
+    async login({ commit }, userData) {
+      commit('SET_USER_DATA', userData)
+      return userData
     },
     async register({ commit }, userData) {
-      // 模拟注册成功
-      const mockUser = {
-        name: userData.name,
-        email: userData.email
-      }
-      commit('SET_USER_DATA', mockUser)
-      return mockUser
+      commit('SET_USER_DATA', userData)
+      return userData
     },
     async logout({ commit }) {
       commit('SET_USER_DATA', null)

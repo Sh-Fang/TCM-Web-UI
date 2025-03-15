@@ -109,6 +109,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'DashboardPage',
   data() {
@@ -116,12 +118,16 @@ export default {
       isSidebarCollapsed: false,
       currentPageTitle: 'Dashboard',
       isUserMenuOpen: false,
-      showLogoutConfirm: false,
-      userInfo: {
-        name: 'John Doe',
-        email: 'john.doe@example.com'
-      }
+      showLogoutConfirm: false
     }
+  },
+  computed: {
+    ...mapState({
+      userInfo: state => state.user.userData || {
+        name: 'Guest',
+        email: 'guest@example.com'
+      }
+    })
   },
   watch: {
     '$route'(to) {

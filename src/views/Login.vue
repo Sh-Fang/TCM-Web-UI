@@ -95,7 +95,6 @@
             password: this.password
           });
 
-          console.log(response);
 
           if (response.status === 200) {
             // 登录成功后，将用户数据存储到 Vuex store
@@ -104,6 +103,8 @@
               email: this.email
             };
             await this.$store.dispatch('login', userData);
+            
+            // 登录成功后，跳转到 graph-visualization 页面
             this.$router.push('/graph-visualization');
           } else {
             toast.error('登录失败，请检查用户名和密码');
