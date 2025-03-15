@@ -259,6 +259,33 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- 偏序关系部分 -->
+                <div v-if="queryGraphInfo.partialOrders && queryGraphInfo.partialOrders.length > 0" class="info-section">
+                  <h4 class="section-title">
+                    <font-awesome-icon icon="sort" class="section-icon" />
+                    偏序关系
+                  </h4>
+                  <div class="section-content">
+                    <div class="partial-orders-list">
+                      <div v-for="(order, index) in queryGraphInfo.partialOrders" :key="index" class="partial-order-item">
+                        <div class="order-header">
+                          <span class="order-label">偏序关系 {{ index + 1 }}</span>
+                        </div>
+                        <div class="order-content">
+                          <div class="order-nodes">
+                            <template v-for="(node, nodeIndex) in order" :key="`node-${index}-${nodeIndex}`">
+                              {{ node }}
+                              <span v-if="nodeIndex < order.length - 1" class="order-arrow">
+                                <font-awesome-icon icon="arrow-right" />
+                              </span>
+                            </template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -366,6 +393,10 @@ export default {
 
         if (response.status === 200) {
           this.queryGraphInfo = response.data;
+          
+          // 提取偏序关系
+          await this.extractPartialOrders();
+          
           const toast = useToast();
           toast.success('分析完成');
         } else {
@@ -379,6 +410,43 @@ export default {
       } finally {
         this.isQueryAnalyzing = false;
       }
+    },
+    async extractPartialOrders() {
+      if (!this.queryGraphFile) return;
+      
+      try {
+        const text = await this.readFileContent(this.queryGraphFile);
+        const lines = text.split('\n');
+        
+        // 提取以 'b ' 开头的行
+        const partialOrders = [];
+        for (const line of lines) {
+          const trimmedLine = line.trim();
+          if (trimmedLine.startsWith('b ')) {
+            // 分割行并移除第一个元素 'b'
+            const nodes = trimmedLine.split(' ').filter(item => item && item !== 'b');
+            if (nodes.length > 0) {
+              partialOrders.push(nodes);
+            }
+          }
+        }
+        
+        // 将偏序关系添加到查询图信息中
+        if (!this.queryGraphInfo) this.queryGraphInfo = {};
+        this.queryGraphInfo.partialOrders = partialOrders;
+        
+        console.log('提取的偏序关系:', partialOrders);
+      } catch (error) {
+        console.error('读取文件内容时出错:', error);
+      }
+    },
+    readFileContent(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsText(file);
+      });
     },
     formatFileSize(bytes) {
       if (bytes === 0) return '0 B';
@@ -707,5 +775,49 @@ export default {
 
 .query .info-value.highlight {
   color: #8b5cf6;
+}
+
+/* 偏序关系样式 */
+.partial-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.partial-order-item {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.order-header {
+  padding: 0.75rem;
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.order-label {
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.order-content {
+  padding: 0.75rem;
+}
+
+.order-nodes {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.order-arrow {
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
 }
 </style>
