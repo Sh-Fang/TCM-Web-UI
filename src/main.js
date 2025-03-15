@@ -27,7 +27,21 @@ import {
   faUser,
   faCog,
   faChevronUp,
-  faChevronDown
+  faChevronDown,
+  faInfoCircle,
+  faEye,
+  faCode,
+  faChartBar,
+  faFileCode,
+  faCircle,
+  faMinus,
+  faPalette,
+  faTag,
+  faHighlighter,
+  faFileUpload,
+  faCloudUploadAlt,
+  faFileAlt,
+  faFolderOpen
 } from '@fortawesome/free-solid-svg-icons'
 import { 
   faGoogle, 
@@ -54,7 +68,21 @@ library.add(
   faUser,
   faCog,
   faChevronUp,
-  faChevronDown
+  faChevronDown,
+  faInfoCircle,
+  faEye,
+  faCode,
+  faChartBar,
+  faFileCode,
+  faCircle,
+  faMinus,
+  faPalette,
+  faTag,
+  faHighlighter,
+  faFileUpload,
+  faCloudUploadAlt,
+  faFileAlt,
+  faFolderOpen
 )
 
 const app = createApp(App)
