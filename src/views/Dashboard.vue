@@ -23,10 +23,6 @@
           <font-awesome-icon icon="database" class="nav-icon" />
           <span v-if="!isSidebarCollapsed">Database Data</span>
         </router-link>
-        <router-link to="/data-export" class="nav-item">
-          <font-awesome-icon icon="file-export" class="nav-icon" />
-          <span v-if="!isSidebarCollapsed">Data Export</span>
-        </router-link>
       </nav>
 
       <div class="sidebar-footer">

@@ -50,11 +50,6 @@ const routes = [
         component: () => import('../views/DatabaseData.vue')
       },
       {
-        path: 'data-export',
-        name: 'DataExport',
-        component: () => import('../views/DataExport.vue')
-      },
-      {
         path: 'profile',
         name: 'Profile',
         component: Profile
