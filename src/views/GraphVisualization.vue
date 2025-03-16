@@ -16,18 +16,6 @@
       </div>
     </div>
 
-    <!-- 可视化渲染加载中模态框 -->
-    <div v-if="isVisualizing" class="modal-overlay">
-      <div class="modal-content">
-        <div class="loading-spinner"></div>
-        <p class="loading-text">正在渲染图形，请稍候...</p>
-        <button class="stop-btn" @click="stopVisualization">
-          <font-awesome-icon icon="stop" class="stop-icon" />
-          终止渲染
-        </button>
-      </div>
-    </div>
-
     <div class="tabs-container">
       <div class="tabs">
         <div 
@@ -167,44 +155,41 @@ export default {
   name: 'GraphVisualizationPage',
   data() {
     return {
-      // 当前激活的标签页（'data'或'query'）
+      // 标签页状态，'data'表示数据图，'query'表示查询图
       activeTab: 'data',
       
-      // 可视化状态标志
+      // 图形是否已经可视化的标志
       dataGraphVisualized: false,
       queryGraphVisualized: false,
       
-      // 上传的文件对象
+      // 用户选择的文件对象
       dataFile: null,
       queryFile: null,
       
-      // 解析后的图数据（将由您实现解析逻辑）
+      // 解析后的图数据，包含节点和边的信息
       parsedDataGraph: null,
       parsedQueryGraph: null,
 
-      // 图实例
+      // G6图实例，用于实际渲染图形
       dataGraph: null,
       queryGraph: null,
 
-      // 加载状态
+      // 文件解析过程中的加载状态
       isParsingFile: false,
-      isVisualizing: false,
 
-      // 是否应该停止渲染
-      shouldStopVisualization: false,
-
-      // Toast提示配置
+      // Toast提示框配置
       toast: {
-        show: false,
-        message: '',
-        type: 'error',
-        icon: 'exclamation-circle',
-        timer: null
+        show: false,        // 是否显示
+        message: '',        // 提示信息
+        type: 'error',      // 提示类型：error/success/info
+        icon: 'exclamation-circle',  // 图标
+        timer: null         // 自动关闭定时器
       }
     }
   },
+
+  // 组件销毁前清理图实例，防止内存泄漏
   beforeUnmount() {
-    // 组件销毁前清理图实例
     if (this.dataGraph) {
       this.dataGraph.destroy();
     }
@@ -212,72 +197,54 @@ export default {
       this.queryGraph.destroy();
     }
   },
+
   methods: {
-    /**
-     * 触发数据图文件选择
-     */
+    // 触发数据图文件选择框
     triggerDataFileSelect() {
       this.$refs.dataFileInput.click();
     },
     
-    /**
-     * 触发查询图文件选择
-     */
+    // 触发查询图文件选择框
     triggerQueryFileSelect() {
       this.$refs.queryFileInput.click();
     },
     
-    /**
-     * 处理数据图文件选择事件
-     * @param {Event} event - 文件选择事件对象
-     */
+    // 处理数据图文件选择，开始解析文件
     handleDataFileSelect(event) {
       const file = event.target.files[0];
       if (file) {
         this.dataFile = file;
         this.dataGraphVisualized = false;
-        // 开始解析前显示加载中
         this.isParsingFile = true;
-        // 解析文件
         this.parseDataFile(file);
       }
     },
     
-    /**
-     * 处理查询图文件选择事件
-     * @param {Event} event - 文件选择事件对象
-     */
+    // 处理查询图文件选择，开始解析文件
     handleQueryFileSelect(event) {
       const file = event.target.files[0];
       if (file) {
         this.queryFile = file;
         this.queryGraphVisualized = false;
-        // 开始解析前显示加载中
         this.isParsingFile = true;
-        // 解析文件
         this.parseQueryFile(file);
       }
     },
     
-    /**
-     * 解析数据图文件
-     * @param {File} file - 上传的文件对象
-     */
+    // 解析数据图文件，使用FileReader读取文件内容
     parseDataFile(file) {
       const fileReader = new FileReader();
       
+      // 文件读取完成后的处理
       fileReader.onload = (e) => {
         try {
           const fileContent = e.target.result;
-          
-          // 使用专门的数据图解析函数
           this.parsedDataGraph = this.parseDataTXT(fileContent);
           console.log('数据图TXT解析成功:', this.parsedDataGraph);
           
-          // 如果解析返回null（格式错误），重置文件选择状态
+          // 解析失败时重置状态
           if (this.parsedDataGraph === null) {
             this.dataFile = null;
-            // 清空文件输入框，这样同一个文件可以重新选择
             this.$refs.dataFileInput.value = '';
           }
         } catch (error) {
@@ -287,11 +254,11 @@ export default {
           this.$refs.dataFileInput.value = '';
           this.isParsingFile = false;
         } finally {
-          // 解析完成后隐藏加载中
           this.isParsingFile = false;
         }
       };
       
+      // 文件读取错误处理
       fileReader.onerror = () => {
         console.error('读取数据图文件失败');
         this.parsedDataGraph = null;
@@ -303,25 +270,18 @@ export default {
       fileReader.readAsText(file);
     },
     
-    /**
-     * 解析查询图文件
-     * @param {File} file - 上传的文件对象
-     */
+    // 解析查询图文件，使用FileReader读取文件内容
     parseQueryFile(file) {
       const fileReader = new FileReader();
       
       fileReader.onload = (e) => {
         try {
           const fileContent = e.target.result;
-          
-          // 解析TXT文件
           this.parsedQueryGraph = this.parseQueryTXT(fileContent);
           console.log('查询图TXT解析成功:', this.parsedQueryGraph);
           
-          // 如果解析返回null（格式错误），重置文件选择状态
           if (this.parsedQueryGraph === null) {
             this.queryFile = null;
-            // 清空文件输入框，这样同一个文件可以重新选择
             this.$refs.queryFileInput.value = '';
           }
         } catch (error) {
@@ -330,7 +290,6 @@ export default {
           this.queryFile = null;
           this.$refs.queryFileInput.value = '';
         } finally {
-          // 解析完成后隐藏加载中
           this.isParsingFile = false;
         }
       };
@@ -346,18 +305,12 @@ export default {
       fileReader.readAsText(file);
     },
     
-    /**
-     * 显示Toast提示
-     * @param {string} message - 提示信息
-     * @param {string} type - 提示类型 ('error' | 'success' | 'info')
-     */
+    // 显示Toast提示信息，3秒后自动消失
     showToast(message, type = 'error') {
-      // 清除之前的定时器
       if (this.toast.timer) {
         clearTimeout(this.toast.timer);
       }
 
-      // 设置图标
       let icon = 'exclamation-circle';
       if (type === 'success') {
         icon = 'check-circle';
@@ -365,7 +318,6 @@ export default {
         icon = 'info-circle';
       }
 
-      // 显示新的toast
       this.toast = {
         show: true,
         message,
@@ -373,22 +325,17 @@ export default {
         icon,
         timer: setTimeout(() => {
           this.toast.show = false;
-        }, 3000) // 3秒后自动消失
+        }, 3000)
       };
     },
 
-    /**
-     * 验证数据图格式
-     * @param {string} line - 要验证的行
-     * @returns {boolean} 是否符合格式要求
-     */
+    // 验证数据图格式是否符合要求：6个字段，且都不为空
     validateDataFormat(line) {
       const parts = line.trim().split(' ');
       if (parts.length !== 6) {
         this.showToast('数据图格式错误：每行应包含6个字段（源节点ID、目标节点ID、边标签、源节点标签、目标节点标签、时间戳）');
         return false;
       }
-      // 验证所有字段都不为空
       if (parts.some(part => !part)) {
         this.showToast('数据图格式错误：所有字段都不能为空');
         return false;
@@ -396,11 +343,7 @@ export default {
       return true;
     },
 
-    /**
-     * 验证查询图格式
-     * @param {string} line - 要验证的行
-     * @returns {boolean} 是否符合格式要求
-     */
+    // 验证查询图格式是否符合要求：以e开头，7个字段，且都不为空
     validateQueryFormat(line) {
       const parts = line.trim().split(' ');
       if (parts[0] !== 'e') {
@@ -411,7 +354,6 @@ export default {
         this.showToast('查询图格式错误：每行应包含7个字段（e、qid、源节点ID、目标节点ID、边标签、源节点标签、目标节点标签）');
         return false;
       }
-      // 验证所有字段都不为空
       if (parts.some(part => !part)) {
         this.showToast('查询图格式错误：所有字段都不能为空');
         return false;
@@ -419,9 +361,7 @@ export default {
       return true;
     },
 
-    /**
-     * 解析数据图TXT格式
-     */
+    // 解析数据图TXT文件内容，限制最多100行，过滤孤立节点
     parseDataTXT(content) {
       const lines = content.split('\n').filter(line => line.trim());
       if (lines.length === 0) {
@@ -429,16 +369,13 @@ export default {
         return null;
       }
 
-      // 验证第一行格式
       if (!this.validateDataFormat(lines[0])) {
         return null;
       }
 
       const nodes = new Map();
       const edges = [];
-      
-      // 用于记录节点的连接状态
-      const connectedNodes = new Set();
+      const connectedNodes = new Set();  // 记录有连接的节点
       
       // 限制最大行数为100
       const maxLines = 100;
@@ -446,30 +383,17 @@ export default {
         this.showToast('数据图文件超过' + maxLines + '行，仅解析前' + maxLines + '行数据', 'info');
       }
       
-      // 遍历每一行，最多处理100行
-      for (let i = 0; i < maxLines; i++) {
+      // 解析每一行数据
+      for (let i = 0; i < maxLines && i < lines.length; i++) {
         const line = lines[i];
         const parts = line.trim().split(' ');
         if (parts.length >= 6) {
-          const [
-            sourceId,
-            targetId,
-            edgeLabel,
-            sourceLabel,
-            targetLabel,
-            timestamp
-          ] = parts;
+          const [sourceId, targetId, edgeLabel, sourceLabel, targetLabel, timestamp] = parts;
 
-          // 如果源节点和目标节点相同，则跳过
-          // if (sourceId === targetId) {
-          //   continue;
-          // }
-
-          // 记录有连接的节点
           connectedNodes.add(sourceId);
           connectedNodes.add(targetId);
 
-          // 处理源节点
+          // 添加节点
           if (!nodes.has(sourceId)) {
             nodes.set(sourceId, {
               id: sourceId,
@@ -477,7 +401,6 @@ export default {
             });
           }
 
-          // 处理目标节点
           if (!nodes.has(targetId)) {
             nodes.set(targetId, {
               id: targetId,
@@ -485,14 +408,14 @@ export default {
             });
           }
 
-          // 添加边
+          // 添加边，区分自环边和普通边
           if (sourceId !== targetId) {
             edges.push({
               source: sourceId,
               target: targetId,
               label: edgeLabel + ', T' + timestamp,
             });
-          }else{
+          } else {
             edges.push({
               source: sourceId,
               target: targetId,
@@ -503,10 +426,8 @@ export default {
         }
       }
 
-      // 过滤掉孤点，只保留有连接的节点
+      // 过滤孤立节点
       const filteredNodes = Array.from(nodes.values()).filter(node => connectedNodes.has(node.id));
-      
-      // 如果有孤点被过滤，显示提示信息
       const removedCount = nodes.size - filteredNodes.length;
       if (removedCount > 0) {
         this.showToast(`已过滤 ${removedCount} 个孤立节点`, 'info');
@@ -518,9 +439,7 @@ export default {
       };
     },
 
-    /**
-     * 解析查询图TXT格式数据
-     */
+    // 解析查询图TXT文件内容
     parseQueryTXT(content) {
       const lines = content.split('\n').filter(line => line.trim());
       if (lines.length === 0) {
@@ -528,7 +447,6 @@ export default {
         return null;
       }
 
-      // 验证第一行格式
       if (!this.validateQueryFormat(lines[0])) {
         return null;
       }
@@ -536,13 +454,12 @@ export default {
       const nodes = new Map();
       const edges = [];
       
-      // 遍历每一行
+      // 解析每一行数据
       for (const line of lines) {
         const parts = line.trim().split(' ');
         if (parts[0] === 'e' && parts.length === 7) {
           const [, qid, sourceId, targetId, edgeLabel, sourceLabel, targetLabel] = parts;
 
-          // 处理源节点
           if (!nodes.has(sourceId)) {
             nodes.set(sourceId, {
               id: sourceId,
@@ -550,7 +467,6 @@ export default {
             });
           }
 
-          // 处理目标节点
           if (!nodes.has(targetId)) {
             nodes.set(targetId, {
               id: targetId,
@@ -558,7 +474,6 @@ export default {
             });
           }
 
-          // 添加边
           edges.push({
             source: sourceId,
             target: targetId,
@@ -573,77 +488,13 @@ export default {
       };
     },
 
-
-    /**
-     * 初始化图
-     * @param {Graph} graph - G6图实例
-     * @param {Object} data - 图数据
-     */
-     initGraph(graph, data) {
+    // 初始化G6图实例，渲染图形
+    initGraph(graph, data) {
       graph.data(data);
       graph.render();
-
-      // 渲染完成后，关闭弹窗
-      this.isVisualizing = false;
-      if (this.shouldStopVisualization) {
-        console.log('可视化渲染已终止');
-      }
     },
-
-    /**
-     * 分批渲染图数据
-     * @param {Graph} graph - G6图实例
-     * @param {Object} data - 图数据
-     */
-    async renderGraphInBatches(graph, data) {
-      const BATCH_SIZE = 100; // 每批处理的节点数
-      const nodes = [...data.nodes];
-      const edges = [...data.edges];
-      
-      try {
-        // 先渲染所有节点
-        for (let i = 0; i < nodes.length && !this.shouldStopVisualization; i += BATCH_SIZE) {
-          const batch = nodes.slice(i, i + BATCH_SIZE);
-          graph.data({
-            nodes: graph.get('nodes').concat(batch),
-            edges: graph.get('edges')
-          });
-          graph.render();
-          // 等待下一帧
-          await new Promise(resolve => requestAnimationFrame(resolve));
-        }
-
-        // 再渲染所有边
-        for (let i = 0; i < edges.length && !this.shouldStopVisualization; i += BATCH_SIZE) {
-          const batch = edges.slice(i, i + BATCH_SIZE);
-          graph.data({
-            nodes: graph.get('nodes'),
-            edges: graph.get('edges').concat(batch)
-          });
-          graph.render();
-          // 等待下一帧
-          await new Promise(resolve => requestAnimationFrame(resolve));
-        }
-      } finally {
-        this.isVisualizing = false;
-        if (this.shouldStopVisualization) {
-          console.log('可视化渲染已终止');
-        }
-      }
-    },
-
-    /**
-     * 终止可视化渲染
-     */
-    stopVisualization() {
-      this.shouldStopVisualization = true;
-    },
-
     
-    /**
-     * 可视化数据图
-     * 此方法将在点击"可视化数据图"按钮时调用
-     */
+    // 可视化数据图，创建G6实例并渲染
     visualizeDataGraph() {
       if (!this.dataFile || !this.parsedDataGraph) {
         console.error('没有可用的数据图数据');
@@ -652,23 +503,18 @@ export default {
       
       console.log('开始可视化数据图:', this.parsedDataGraph);
       this.dataGraphVisualized = true;
-      // this.isVisualizing = true;
-      // this.shouldStopVisualization = false;
       
-      // 在下一个DOM更新周期执行可视化
       this.$nextTick(() => {
-        // 这里是可视化的占位代码，将由您实现实际的可视化逻辑
         const container = document.getElementById('data-graph-container');
         if (container) {
           const width = container.offsetWidth;
           const height = container.offsetHeight;
 
-          // 如果已经存在图实例，先销毁它
           if (this.dataGraph) {
             this.dataGraph.destroy();
           }
 
-          // 创建新的图实例
+          // 配置数据图的G6实例
           this.dataGraph = new window.G6.Graph({
             container: "data-graph-container",
             width: width,
@@ -690,28 +536,23 @@ export default {
             },
             defaultEdge: {
               labelCfg: {
-                autoRotate:true
+                autoRotate: true
               },
               style: {
                 stroke: "#e2e2e2",
-                endArrow:true
+                endArrow: true
               }
             },
             fitView: true,
             fitViewPadding: [20, 20, 20, 20],
           });
 
-          // 渲染数据
           this.initGraph(this.dataGraph, this.parsedDataGraph);
         }
       });
     },
 
-    
-    /**
-     * 可视化查询图
-     * 此方法将在点击"可视化查询图"按钮时调用
-     */
+    // 可视化查询图，创建G6实例并渲染
     visualizeQueryGraph() {
       if (!this.queryFile || !this.parsedQueryGraph) {
         console.error('没有可用的查询图数据');
@@ -720,27 +561,26 @@ export default {
       
       this.queryGraphVisualized = true;
 
-      // 在下一个DOM更新周期执行可视化
       this.$nextTick(() => {
-        // 这里是可视化的占位代码，将由您实现实际的可视化逻辑
         const container = document.getElementById('query-graph-container');
         if (container) {
           const width = container.offsetWidth;
           const height = container.offsetHeight;
 
-          // 如果已经存在图实例，先销毁它
           if (this.queryGraph) {
             this.queryGraph.destroy();
-          } 
+          }
+
+          // 配置查询图的G6实例，使用力导向布局
           this.queryGraph = new window.G6.Graph({
             container: "query-graph-container",
             width: width,
             height: height,
             layout: {
-                type: 'force',
-                center: [ 0, 0 ],
-                linkDistance:300,
-                nodeStrength:-20,
+              type: 'force',
+              center: [0, 0],
+              linkDistance: 300,
+              nodeStrength: -20,
             },
             defaultNode: {
               shape: "circle",
@@ -759,25 +599,21 @@ export default {
             },
             defaultEdge: {
               labelCfg: {
-                autoRotate:true
+                autoRotate: true
               },
               style: {
                 stroke: "#e2e2e2",
-                endArrow:true
+                endArrow: true
               }
             },
             fitView: true,
           });
-          this.initGraph(this.queryGraph, this.parsedQueryGraph); 
+          this.initGraph(this.queryGraph, this.parsedQueryGraph);
         }
       });
     },
     
-    /**
-     * 格式化文件大小
-     * @param {number} bytes - 文件大小（字节）
-     * @returns {string} 格式化后的文件大小
-     */
+    // 格式化文件大小显示
     formatFileSize(bytes) {
       if (bytes === 0) return '0 B';
       
