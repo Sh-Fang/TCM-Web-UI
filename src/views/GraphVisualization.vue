@@ -199,6 +199,47 @@ export default {
   },
 
   methods: {
+    // 初始化G6图实例，渲染图形
+    renderGraph(graph, data) {
+      graph.data(data);
+      graph.render();
+    },
+
+    // 显示Toast提示信息，3秒后自动消失
+    showToast(message, type = 'error') {
+      if (this.toast.timer) {
+        clearTimeout(this.toast.timer);
+      }
+
+      let icon = 'exclamation-circle';
+      if (type === 'success') {
+        icon = 'check-circle';
+      } else if (type === 'info') {
+        icon = 'info-circle';
+      }
+
+      this.toast = {
+        show: true,
+        message,
+        type,
+        icon,
+        timer: setTimeout(() => {
+          this.toast.show = false;
+        }, 3000)
+      };
+    },
+
+    // 格式化文件大小显示
+    formatFileSize(bytes) {
+      if (bytes === 0) return '0 B';
+      
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    },
+
     // 触发数据图文件选择框
     triggerDataFileSelect() {
       this.$refs.dataFileInput.click();
@@ -303,30 +344,6 @@ export default {
       };
       
       fileReader.readAsText(file);
-    },
-    
-    // 显示Toast提示信息，3秒后自动消失
-    showToast(message, type = 'error') {
-      if (this.toast.timer) {
-        clearTimeout(this.toast.timer);
-      }
-
-      let icon = 'exclamation-circle';
-      if (type === 'success') {
-        icon = 'check-circle';
-      } else if (type === 'info') {
-        icon = 'info-circle';
-      }
-
-      this.toast = {
-        show: true,
-        message,
-        type,
-        icon,
-        timer: setTimeout(() => {
-          this.toast.show = false;
-        }, 3000)
-      };
     },
 
     // 验证数据图格式是否符合要求：6个字段，且都不为空
@@ -487,12 +504,6 @@ export default {
         edges: edges
       };
     },
-
-    // 初始化G6图实例，渲染图形
-    initGraph(graph, data) {
-      graph.data(data);
-      graph.render();
-    },
     
     // 可视化数据图，创建G6实例并渲染
     visualizeDataGraph() {
@@ -547,7 +558,7 @@ export default {
             fitViewPadding: [20, 20, 20, 20],
           });
 
-          this.initGraph(this.dataGraph, this.parsedDataGraph);
+          this.renderGraph(this.dataGraph, this.parsedDataGraph);
         }
       });
     },
@@ -608,21 +619,11 @@ export default {
             },
             fitView: true,
           });
-          this.initGraph(this.queryGraph, this.parsedQueryGraph);
+          this.renderGraph(this.queryGraph, this.parsedQueryGraph);
         }
       });
     },
-    
-    // 格式化文件大小显示
-    formatFileSize(bytes) {
-      if (bytes === 0) return '0 B';
-      
-      const k = 1024;
-      const sizes = ['B', 'KB', 'MB', 'GB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
+  
   }
 }
 </script>
