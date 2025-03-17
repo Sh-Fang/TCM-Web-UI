@@ -26,37 +26,37 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Dashboard',
+        name: '仪表盘',
         component: () => import('../views/GraphVisualization.vue')
       },
       {
         path: 'graph-visualization',
-        name: 'GraphVisualization',
+        name: '图可视化',
         component: () => import('../views/GraphVisualization.vue')
       },
       {
         path: 'graph-analysis',
-        name: 'GraphAnalysis',
+        name: '图分析',
         component: () => import('../views/GraphAnalysis.vue')
       },
       {
         path: 'subgraph-matching',
-        name: 'SubgraphMatching',
+        name: '子图匹配',
         component: () => import('../views/SubgraphMatching.vue')
       },
       {
         path: 'database-data',
-        name: 'DatabaseData',
+        name: '数据库管理',
         component: () => import('../views/DatabaseData.vue')
       },
       {
         path: 'profile',
-        name: 'Profile',
+        name: '个人资料',
         component: Profile
       },
       {
         path: 'settings',
-        name: 'Settings',
+        name: '设置',
         component: Settings
       }
     ]

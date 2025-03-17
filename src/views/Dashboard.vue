@@ -3,25 +3,25 @@
     <div class="sidebar-container" :class="{ 'sidebar-collapsed': isSidebarCollapsed }">
       <div class="sidebar-header">
         <font-awesome-icon icon="project-diagram" class="app-logo" />
-        <span v-if="!isSidebarCollapsed" class="app-name">Graph App</span>
+        <span v-if="!isSidebarCollapsed" class="app-name">子图匹配系统</span>
       </div>
       
       <nav class="dashboard-nav">
         <router-link to="/graph-visualization" class="nav-item">
           <font-awesome-icon icon="project-diagram" class="nav-icon" />
-          <span v-if="!isSidebarCollapsed">Graph Visualization</span>
+          <span v-if="!isSidebarCollapsed">图可视化</span>
         </router-link>
         <router-link to="/graph-analysis" class="nav-item">
           <font-awesome-icon icon="chart-line" class="nav-icon" />
-          <span v-if="!isSidebarCollapsed">Graph Analysis</span>
+          <span v-if="!isSidebarCollapsed">图分析</span>
         </router-link>
         <router-link to="/subgraph-matching" class="nav-item">
           <font-awesome-icon icon="search" class="nav-icon" />
-          <span v-if="!isSidebarCollapsed">Subgraph Matching</span>
+          <span v-if="!isSidebarCollapsed">子图匹配</span>
         </router-link>
         <router-link to="/database-data" class="nav-item">
           <font-awesome-icon icon="database" class="nav-icon" />
-          <span v-if="!isSidebarCollapsed">Database Data</span>
+          <span v-if="!isSidebarCollapsed">数据库管理</span>
         </router-link>
       </nav>
 
@@ -31,7 +31,7 @@
         </button>
         <button class="logout-btn" @click="confirmLogout">
           <font-awesome-icon icon="sign-out-alt" class="nav-icon" />
-          <span v-if="!isSidebarCollapsed">Logout</span>
+          <span v-if="!isSidebarCollapsed">退出登录</span>
         </button>
       </div>
     </div>
