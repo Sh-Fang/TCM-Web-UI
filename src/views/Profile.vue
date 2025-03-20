@@ -158,7 +158,7 @@ export default {
     toggleEdit() {
       if (this.isEditing) {
         // 保存更改
-        this.$store.dispatch('user/updateUserProfile', {
+        this.$store.dispatch('updateUserProfile', {
           name: this.userInfo.name,
           email: this.userInfo.email
         })
