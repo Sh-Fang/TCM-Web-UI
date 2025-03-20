@@ -461,7 +461,10 @@ export default {
 
 <style scoped>
 .graph-analysis {
+  flex: 1;
   padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .page-header {
@@ -471,17 +474,17 @@ export default {
 .page-header h1 {
   font-size: 1.875rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .subtitle {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-top: 0.5rem;
 }
 
 .content-container {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -489,8 +492,8 @@ export default {
 
 .tab-buttons {
   display: flex;
-  border-bottom: 1px solid #e5e7eb;
-  background: #f8fafc;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   padding: 0 1rem;
 }
 
@@ -498,7 +501,7 @@ export default {
   padding: 1rem 1.5rem;
   border: none;
   background: none;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -509,11 +512,11 @@ export default {
 }
 
 .tab-btn:hover {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .tab-btn.active {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .tab-btn.active::after {
@@ -523,7 +526,7 @@ export default {
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #3b82f6;
+  background-color: var(--primary-color);
 }
 
 .tab-icon {
@@ -531,11 +534,11 @@ export default {
 }
 
 .tab-icon.stream {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .tab-icon.query {
-  color: #8b5cf6;
+  color: var(--secondary-color);
 }
 
 .tab-content {
@@ -549,16 +552,16 @@ export default {
 }
 
 .file-card {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   overflow: hidden;
 }
 
 .file-header {
   padding: 1.5rem;
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -569,18 +572,18 @@ export default {
 }
 
 .file-icon.stream {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .file-icon.query {
-  color: #8b5cf6;
+  color: var(--secondary-color);
 }
 
 .file-header h2 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .file-content {
@@ -596,10 +599,10 @@ export default {
 
 .file-select-btn {
   padding: 0.75rem 1.5rem;
-  background-color: #f3f4f6;
-  border: 1px dashed #d1d5db;
+  background-color: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
   border-radius: 0.375rem;
-  color: #4b5563;
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -608,8 +611,8 @@ export default {
 }
 
 .file-select-btn:hover {
-  background-color: #e5e7eb;
-  border-color: #9ca3af;
+  background-color: var(--hover-bg);
+  border-color: var(--primary-color);
 }
 
 .analyze-btn-wrapper {
@@ -620,7 +623,7 @@ export default {
 
 .analyze-btn {
   padding: 0.75rem 2rem;
-  background-color: #3b82f6;
+  background-color: var(--primary-color);
   border: none;
   border-radius: 0.375rem;
   color: white;
@@ -633,11 +636,11 @@ export default {
 }
 
 .analyze-btn:hover:not(:disabled) {
-  background-color: #2563eb;
+  background-color: var(--hover-primary);
 }
 
 .analyze-btn:disabled {
-  background-color: #93c5fd;
+  background-color: var(--disabled-bg);
   cursor: not-allowed;
 }
 
@@ -646,29 +649,30 @@ export default {
 }
 
 .selected-file {
-  color: #4b5563;
+  color: var(--text-secondary);
   margin: 0;
   text-align: center;
   word-break: break-all;
 }
 
 .file-hint {
-  color: #9ca3af;
+  color: var(--text-secondary);
   margin: 0;
   text-align: center;
 }
 
 .info-card {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   overflow: hidden;
+  margin-bottom: 1.5rem;
 }
 
 .info-header {
   padding: 1.5rem;
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -679,18 +683,18 @@ export default {
 }
 
 .info-icon.stream {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .info-icon.query {
-  color: #8b5cf6;
+  color: var(--secondary-color);
 }
 
 .info-header h3 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .info-content {
@@ -700,35 +704,33 @@ export default {
 .info-sections {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .info-section {
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .section-title {
-  margin: 0;
-  padding: 1rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #1f2937;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  color: var(--text-primary);
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .section-icon {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .section-content {
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .section-content.grid-2 {
@@ -741,83 +743,89 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 0.5rem;
-  background: white;
-  border-radius: 0.25rem;
 }
 
 .info-label {
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .info-value {
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .info-value.highlight {
-  font-size: 1.25rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .info-value.path {
-  font-size: 0.875rem;
+  font-family: monospace;
+  padding: 0.5rem;
+  background-color: var(--bg-secondary);
+  border-radius: 0.25rem;
   word-break: break-all;
-  color: #6b7280;
 }
 
 .stream .info-value.highlight {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .query .info-value.highlight {
-  color: #8b5cf6;
+  color: var(--secondary-color);
 }
 
 /* 偏序关系样式 */
 .partial-orders-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-height: 300px;
-  overflow-y: auto;
+  gap: 1rem;
 }
 
 .partial-order-item {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background-color: var(--bg-secondary);
   border-radius: 0.375rem;
-  overflow: hidden;
+  padding: 1rem;
 }
 
 .order-header {
-  padding: 0.75rem;
-  background: #f3f4f6;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0.5rem;
 }
 
 .order-label {
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 .order-content {
-  padding: 0.75rem;
+  padding: 0.5rem;
+  background-color: var(--bg-primary);
+  border-radius: 0.25rem;
 }
 
 .order-nodes {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   gap: 0.5rem;
+  flex-wrap: wrap;
+  color: var(--text-primary);
 }
 
 .order-arrow {
-  color: #6b7280;
-  display: inline-flex;
+  color: var(--text-secondary);
+  display: flex;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .graph-analysis {
+    padding: 1rem;
+  }
+  
+  .section-content.grid-2 {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

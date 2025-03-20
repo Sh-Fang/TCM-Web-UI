@@ -639,15 +639,15 @@ export default {
 .page-title {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .tabs-container {
   margin-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .tabs {
@@ -664,18 +664,18 @@ export default {
   gap: 0.5rem;
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .tab:hover {
-  color: #3b82f6;
-  background-color: #f3f4f6;
+  color: var(--primary-color);
+  background-color: var(--hover-bg);
 }
 
 .tab.active {
-  color: #3b82f6;
-  border-bottom-color: #3b82f6;
-  background-color: #f0f9ff;
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  background-color: var(--bg-secondary);
 }
 
 .tab-icon {
@@ -689,8 +689,8 @@ export default {
 
 /* 文件卡片样式 */
 .file-card {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   overflow: hidden;
   margin-bottom: 1.5rem;
@@ -698,8 +698,8 @@ export default {
 
 .file-header {
   padding: 1.5rem;
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -710,18 +710,18 @@ export default {
 }
 
 .file-icon.data {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .file-icon.query {
-  color: #8b5cf6;
+  color: var(--secondary-color);
 }
 
 .file-header h2 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .file-content {
@@ -737,10 +737,10 @@ export default {
 
 .file-select-btn {
   padding: 0.75rem 1.5rem;
-  background-color: #f3f4f6;
-  border: 1px dashed #d1d5db;
+  background-color: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
   border-radius: 0.375rem;
-  color: #4b5563;
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -749,19 +749,19 @@ export default {
 }
 
 .file-select-btn:hover {
-  background-color: #e5e7eb;
-  border-color: #9ca3af;
+  background-color: var(--hover-bg);
+  border-color: var(--border-color-hover);
 }
 
 .selected-file {
-  color: #4b5563;
+  color: var(--text-secondary);
   margin: 0;
   text-align: center;
   word-break: break-all;
 }
 
 .file-hint {
-  color: #9ca3af;
+  color: var(--text-secondary);
   margin: 0;
   text-align: center;
 }
@@ -774,7 +774,7 @@ export default {
 
 .visualize-btn {
   padding: 0.75rem 2rem;
-  background-color: #3b82f6;
+  background-color: var(--primary-color);
   border: none;
   border-radius: 0.375rem;
   color: white;
@@ -787,11 +787,11 @@ export default {
 }
 
 .visualize-btn:hover:not(:disabled) {
-  background-color: #2563eb;
+  background-color: var(--primary-color-hover);
 }
 
 .visualize-btn:disabled {
-  background-color: #93c5fd;
+  background-color: var(--primary-color-disabled);
   cursor: not-allowed;
 }
 
@@ -803,11 +803,11 @@ export default {
 .visualization-container {
   margin-top: 2rem;
   min-height: 500px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   padding: 1.5rem;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-bg);
+  box-shadow: 0 1px 3px var(--shadow-color);
 }
 
 .empty-state {
@@ -817,8 +817,8 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #9ca3af;
-  background-color: #f9fafb;
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
   border-radius: 0.375rem;
 }
 
@@ -848,7 +848,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background-color: #f8fafc;
+  background-color: var(--bg-secondary);
   border-radius: 0.375rem;
 }
 
@@ -856,9 +856,9 @@ export default {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #3b82f6;
+  color: var(--primary-color);
   padding: 0.5rem 1rem;
-  background-color: #eff6ff;
+  background-color: var(--bg-secondary);
   border-radius: 0.375rem;
 }
 
@@ -871,12 +871,12 @@ export default {
 }
 
 .placeholder-info > div {
-  background-color: #e0f2fe;
+  background-color: var(--bg-secondary);
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
-  color: #0369a1;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--text-secondary);
+  box-shadow: 0 1px 2px var(--shadow-color);
 }
 
 .placeholder-message {
@@ -884,21 +884,11 @@ export default {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background-color: #f0f9ff;
-  border-left: 4px solid #3b82f6;
-  color: #1e40af;
+  background-color: var(--bg-secondary);
+  border-left: 4px solid var(--primary-color);
+  color: var(--text-primary);
   font-size: 0.875rem;
   border-radius: 0 0.25rem 0.25rem 0;
-}
-
-@media (max-width: 768px) {
-  .graph-visualization {
-    padding: 1rem;
-  }
-  
-  .visualize-btn {
-    width: 100%;
-  }
 }
 
 /* 模态框样式 */
@@ -908,7 +898,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--modal-overlay);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -916,10 +906,10 @@ export default {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--shadow-color);
   text-align: center;
   max-width: 90%;
   width: 400px;
@@ -929,9 +919,9 @@ export default {
   display: inline-block;
   width: 50px;
   height: 50px;
-  border: 3px solid #f3f3f3;
+  border: 3px solid var(--border-color);
   border-radius: 50%;
-  border-top: 3px solid #3b82f6;
+  border-top: 3px solid var(--primary-color);
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
 }
@@ -942,13 +932,13 @@ export default {
 }
 
 .loading-text {
-  color: #4b5563;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   font-size: 1.1rem;
 }
 
 .stop-btn {
-  background-color: #ef4444;
+  background-color: var(--error-color);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -963,7 +953,7 @@ export default {
 }
 
 .stop-btn:hover {
-  background-color: #dc2626;
+  background-color: var(--error-color-hover);
 }
 
 .stop-icon {
@@ -987,15 +977,15 @@ export default {
 }
 
 .toast.error {
-  background-color: #ef4444;
+  background-color: var(--error-color);
 }
 
 .toast.success {
-  background-color: #10b981;
+  background-color: var(--success-color);
 }
 
 .toast.info {
-  background-color: #3b82f6;
+  background-color: var(--info-color);
 }
 
 .toast-icon {
@@ -1010,6 +1000,16 @@ export default {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .graph-visualization {
+    padding: 1rem;
+  }
+  
+  .visualize-btn {
+    width: 100%;
   }
 }
 </style>

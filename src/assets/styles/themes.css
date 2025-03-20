@@ -1,0 +1,316 @@
+/* 浅色主题 */
+:root[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --primary-color: #3b82f6;
+  --toggle-bg: #e5e7eb;
+  --border-color: #e5e7eb;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --hover-bg: #f3f4f6;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --header-bg: #ffffff;
+  --tab-active-bg: #eff6ff;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  --info-color: #3b82f6;
+  --stat-card-bg: #f9fafb;
+  --file-header-bg: #f8fafc;
+  --empty-state-bg: #f9fafb;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --toast-success-bg: #10b981;
+  --toast-error-bg: #ef4444;
+  --toast-info-bg: #3b82f6;
+}
+
+/* 深色主题 */
+:root[data-theme="dark"] {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --primary-color: #60a5fa;
+  --toggle-bg: #4b5563;
+  --border-color: #374151;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --hover-bg: #374151;
+  --card-bg: #1f2937;
+  --input-bg: #374151;
+  --sidebar-bg: #1f2937;
+  --header-bg: #1f2937;
+  --tab-active-bg: #1f2937;
+  --success-color: #059669;
+  --error-color: #dc2626;
+  --warning-color: #d97706;
+  --info-color: #60a5fa;
+  --stat-card-bg: #1f2937;
+  --file-header-bg: #1f2937;
+  --empty-state-bg: #1f2937;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+  --toast-success-bg: #059669;
+  --toast-error-bg: #dc2626;
+  --toast-info-bg: #60a5fa;
+}
+
+/* 应用主题的全局样式 */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+/* 通用卡片样式 */
+.card,
+.modal-content,
+.dropdown-menu,
+.settings-section,
+.profile-section,
+.auth-card,
+.file-card,
+.info-card,
+.action-card,
+.stat-card,
+.visualization-container {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+/* 文件卡片头部 */
+.file-header,
+.info-header,
+.modal-header {
+  background-color: var(--file-header-bg);
+  border-color: var(--border-color);
+}
+
+/* 统计卡片 */
+.stat-card {
+  background-color: var(--stat-card-bg);
+  border-color: var(--border-color);
+}
+
+.stat-value {
+  color: var(--primary-color);
+}
+
+.stat-label {
+  color: var(--text-secondary);
+}
+
+/* 空状态 */
+.empty-state {
+  background-color: var(--empty-state-bg);
+  color: var(--text-secondary);
+}
+
+/* 表格样式 */
+.data-table th {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.data-table td {
+  color: var(--text-primary);
+}
+
+.data-table tr:hover {
+  background-color: var(--hover-bg);
+}
+
+/* 按钮样式 */
+.btn-primary,
+.visualize-btn,
+.analyze-btn,
+.match-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled),
+.visualize-btn:hover:not(:disabled),
+.analyze-btn:hover:not(:disabled),
+.match-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* 文件选择按钮 */
+.file-select-btn {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.file-select-btn:hover {
+  background-color: var(--hover-bg);
+}
+
+/* 标签页 */
+.tabs {
+  border-color: var(--border-color);
+}
+
+.tab {
+  color: var(--text-secondary);
+}
+
+.tab:hover {
+  color: var(--primary-color);
+  background-color: var(--hover-bg);
+}
+
+.tab.active {
+  color: var(--primary-color);
+  background-color: var(--tab-active-bg);
+  border-color: var(--primary-color);
+}
+
+/* 模态框 */
+.modal-overlay {
+  background-color: var(--modal-overlay);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+}
+
+/* Toast 通知 */
+.toast.success {
+  background-color: var(--toast-success-bg);
+}
+
+.toast.error {
+  background-color: var(--toast-error-bg);
+}
+
+.toast.info {
+  background-color: var(--toast-info-bg);
+}
+
+/* 输入框 */
+input,
+select,
+textarea {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+/* 图标 */
+.icon {
+  color: var(--text-primary);
+}
+
+/* 分割线 */
+hr,
+.menu-divider {
+  border-color: var(--border-color);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* 文件信息和提示 */
+.selected-file {
+  color: var(--text-primary);
+}
+
+.file-hint {
+  color: var(--text-secondary);
+}
+
+/* 进度条 */
+.progress-bar {
+  background-color: var(--bg-secondary);
+}
+
+.progress-fill {
+  background-color: var(--primary-color);
+}
+
+.progress-text {
+  color: var(--text-primary);
+}
+
+/* 图表容器 */
+.graph-canvas {
+  background-color: var(--card-bg);
+}
+
+/* 确认对话框 */
+.confirm-dialog {
+  background-color: var(--card-bg);
+}
+
+.confirm-dialog-header {
+  border-color: var(--border-color);
+}
+
+.confirm-dialog-header h3 {
+  color: var(--text-primary);
+}
+
+.confirm-dialog-content {
+  color: var(--text-secondary);
+}
+
+.confirm-dialog-footer {
+  border-color: var(--border-color);
+}
+
+/* 过滤器 */
+.filter-group {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.filter-group label {
+  color: var(--text-primary);
+}
+
+.filter-select {
+  background-color: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* 代码块 */
+.code-block {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* 笔记框 */
+.notes-box {
+  background-color: var(--bg-secondary);
+  border-color: var(--primary-color);
+  color: var(--text-primary);
+} 

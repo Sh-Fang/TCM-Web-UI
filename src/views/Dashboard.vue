@@ -112,7 +112,7 @@ export default {
   name: 'DashboardPage',
   data() {
     return {
-      isSidebarCollapsed: false,
+      isSidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
       currentPageTitle: 'Dashboard',
       isUserMenuOpen: false,
       showLogoutConfirm: false
@@ -140,6 +140,7 @@ export default {
   methods: {
     toggleSidebar() {
       this.isSidebarCollapsed = !this.isSidebarCollapsed
+      localStorage.setItem('sidebarCollapsed', this.isSidebarCollapsed)
     },
     toggleUserMenu(event) {
       event.stopPropagation()
@@ -179,13 +180,13 @@ export default {
 .dashboard {
   display: flex;
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: var(--bg-primary);
 }
 
 .sidebar-container {
   width: 280px;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--sidebar-bg);
+  box-shadow: 0 1px 3px var(--shadow-color);
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
@@ -205,18 +206,18 @@ export default {
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .app-logo {
   font-size: 1.5rem;
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .app-name {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .dashboard-nav {
@@ -230,7 +231,7 @@ export default {
 .nav-item {
   padding: 0.75rem 1rem;
   text-decoration: none;
-  color: #4b5563;
+  color: var(--text-secondary);
   border-radius: 0.5rem;
   transition: all 0.2s;
   display: flex;
@@ -246,18 +247,18 @@ export default {
 }
 
 .nav-item:hover {
-  background-color: #f3f4f6;
-  color: #3b82f6;
+  background-color: var(--hover-bg);
+  color: var(--primary-color);
 }
 
 .nav-item.router-link-active {
-  background-color: #eff6ff;
-  color: #3b82f6;
+  background-color: var(--hover-bg);
+  color: var(--primary-color);
 }
 
 .sidebar-footer {
   padding: 1rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -267,7 +268,7 @@ export default {
   padding: 0.5rem;
   border: none;
   background: none;
-  color: #6b7280;
+  color: var(--text-secondary);
   cursor: pointer;
   border-radius: 0.375rem;
   display: flex;
@@ -277,8 +278,8 @@ export default {
 }
 
 .collapse-btn:hover {
-  background-color: #f3f4f6;
-  color: #3b82f6;
+  background-color: var(--hover-bg);
+  color: var(--primary-color);
 }
 
 .collapse-icon {
@@ -309,6 +310,7 @@ export default {
   overflow: hidden;
   margin-left: 280px;
   transition: margin-left 0.3s ease;
+  background-color: var(--bg-primary);
 }
 
 .sidebar-collapsed + .main-content {
@@ -317,8 +319,8 @@ export default {
 
 .top-bar {
   height: 64px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
   padding: 0 2rem;
   display: flex;
   align-items: center;
@@ -328,7 +330,7 @@ export default {
 .breadcrumb h1 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -343,23 +345,24 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #f3f4f6;
+  background-color: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 1.5rem;
 }
 
 .user-name {
   font-weight: 500;
-  color: #4b5563;
+  color: var(--text-primary);
 }
 
 .content-area {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
+  background-color: var(--bg-primary);
 }
 
 .user-profile {
@@ -373,12 +376,12 @@ export default {
 }
 
 .user-profile:hover {
-  background-color: #f3f4f6;
+  background-color: var(--hover-bg);
 }
 
 .chevron-icon {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .user-menu {
@@ -386,9 +389,9 @@ export default {
   top: calc(100% + 0.5rem);
   right: 0;
   width: 280px;
-  background: white;
+  background: var(--card-bg);
   border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color);
   z-index: 1000;
 }
 
@@ -403,11 +406,11 @@ export default {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #f3f4f6;
+  background-color: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 2rem;
 }
 
@@ -415,18 +418,18 @@ export default {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .menu-user-info p {
   margin: 0.25rem 0 0;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .menu-divider {
   height: 1px;
-  background-color: #e5e7eb;
+  background-color: var(--border-color);
   margin: 0.5rem 0;
 }
 
@@ -440,7 +443,7 @@ export default {
   padding: 0.75rem 1.5rem;
   border: none;
   background: none;
-  color: #4b5563;
+  color: var(--text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -451,8 +454,8 @@ export default {
 }
 
 .menu-item:hover {
-  background-color: #f3f4f6;
-  color: #3b82f6;
+  background-color: var(--hover-bg);
+  color: var(--primary-color);
 }
 
 .menu-icon {

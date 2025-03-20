@@ -673,14 +673,15 @@ export default {
 .data-container {
   margin-top: 2rem;
   min-height: 500px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   padding: 1rem;
+  background: var(--card-bg);
 }
 
 .tabs {
   display: flex;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 1.5rem;
 }
 
@@ -692,6 +693,7 @@ export default {
   display: flex;
   align-items: center;
   transition: all 0.2s ease;
+  color: var(--text-secondary);
 }
 
 .tab svg {
@@ -700,13 +702,13 @@ export default {
 }
 
 .tab.active {
-  border-bottom: 2px solid #3b82f6;
-  color: #3b82f6;
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--primary-color);
 }
 
 .tab:hover:not(.active) {
-  background-color: #f9fafb;
-  color: #4b5563;
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 .tab-content {
@@ -727,16 +729,18 @@ export default {
 .data-table td {
   padding: 0.75rem 1rem;
   text-align: center;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .data-table th {
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
   font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .data-table tr:hover {
-  background-color: #f9fafb;
+  background-color: var(--hover-bg);
 }
 
 .btn {
@@ -748,8 +752,8 @@ export default {
 }
 
 .btn-view {
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-inverse);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -761,9 +765,9 @@ export default {
 }
 
 .btn-view:hover {
-  background-color: #2563eb;
+  background-color: var(--primary-color-hover);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .filter-container {
@@ -777,32 +781,33 @@ export default {
 .filter-group {
   display: flex;
   align-items: center;
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   margin-right: 1rem;
   margin-bottom: 0.5rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
 .filter-group label {
   margin-right: 0.5rem;
   font-weight: 500;
-  color: #4b5563;
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
 }
 
 .filter-group label svg {
   margin-right: 0.5rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .filter-select {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  border: 1px solid #d1d5db;
-  background-color: white;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  color: var(--text-primary);
   min-width: 120px;
 }
 
@@ -813,7 +818,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--modal-overlay);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -821,13 +826,13 @@ export default {
 }
 
 .modal-container {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 0.5rem;
   width: 80%;
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .modal-header {
@@ -835,7 +840,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
@@ -843,11 +848,12 @@ export default {
   font-size: 1.25rem;
   display: flex;
   align-items: center;
+  color: var(--text-primary);
 }
 
 .modal-header h3 svg {
   margin-right: 0.5rem;
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .close-btn {
@@ -855,7 +861,7 @@ export default {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .modal-content {
@@ -870,11 +876,12 @@ export default {
 .detail-label {
   font-weight: 600;
   width: 120px;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 .detail-value {
   flex: 1;
+  color: var(--text-primary);
 }
 
 .detail-section {
@@ -883,14 +890,14 @@ export default {
 
 .detail-section h4 {
   margin-bottom: 0.75rem;
-  color: #4b5563;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
 }
 
 .detail-section h4 svg {
   margin-right: 0.5rem;
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .related-items {
@@ -901,14 +908,15 @@ export default {
 
 .related-items li {
   padding: 0.75rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
+  color: var(--text-primary);
 }
 
 .related-items li svg {
   margin-right: 0.5rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .graph-preview {
@@ -917,16 +925,16 @@ export default {
 
 .graph-placeholder {
   height: 300px;
-  border: 1px dashed #d1d5db;
+  border: 1px dashed var(--border-color);
   border-radius: 0.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
 }
 
 .placeholder-text {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-style: italic;
   display: flex;
   flex-direction: column;
@@ -936,7 +944,7 @@ export default {
 
 .placeholder-text svg {
   margin-bottom: 1rem;
-  color: #d1d5db;
+  color: var(--text-secondary);
 }
 
 /* 新增样式 */
@@ -948,61 +956,62 @@ export default {
 }
 
 .stat-card {
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
   border-radius: 0.5rem;
   padding: 1rem;
   text-align: center;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px var(--shadow-color);
   transition: all 0.2s ease;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-color: #d1d5db;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  border-color: var(--primary-color);
 }
 
 .stat-icon {
   font-size: 1.25rem;
-  color: #3b82f6;
+  color: var(--primary-color);
   margin-bottom: 0.5rem;
 }
 
 .stat-value {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: var(--primary-color);
   margin-bottom: 0.5rem;
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .notes-box {
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
   border-radius: 0.5rem;
   padding: 1rem;
   margin-top: 0.5rem;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid var(--primary-color);
   font-style: italic;
-  color: #4b5563;
+  color: var(--text-primary);
 }
 
 .item-name {
   font-weight: 500;
+  color: var(--text-primary);
 }
 
 .item-meta {
   margin-left: 1rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .code-block {
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
   border-radius: 0.5rem;
   padding: 1rem;
   overflow-x: auto;
@@ -1012,11 +1021,8 @@ export default {
   white-space: pre-wrap;
   max-height: 400px;
   overflow-y: auto;
-  border: 1px solid #e5e7eb;
-}
-
-.detail-section {
-  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .action-buttons {
@@ -1026,8 +1032,8 @@ export default {
 }
 
 .btn-download {
-  background-color: #10b981;
-  color: white;
+  background-color: var(--success-color);
+  color: var(--text-inverse);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1039,8 +1045,8 @@ export default {
 }
 
 .btn-download:hover {
-  background-color: #059669;
+  background-color: var(--success-color-hover);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 </style>

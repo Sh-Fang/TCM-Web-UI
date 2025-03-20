@@ -222,19 +222,19 @@ export default {
 .profile-header h2 {
   font-size: 1.875rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .profile-header p {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0.5rem 0 0;
 }
 
 .profile-section {
-  background: white;
+  background: var(--card-bg);
   border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px var(--shadow-color);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
@@ -249,16 +249,16 @@ export default {
 .section-header h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .edit-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.375rem;
-  background: white;
-  color: #4b5563;
+  background: var(--card-bg);
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -267,8 +267,8 @@ export default {
 }
 
 .edit-btn:hover {
-  background: #f3f4f6;
-  color: #3b82f6;
+  background: var(--hover-bg);
+  color: var(--primary-color);
 }
 
 .profile-form {
@@ -285,29 +285,30 @@ export default {
 
 .form-group label {
   font-weight: 500;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 .form-group input,
 .form-group textarea {
   padding: 0.75rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.375rem;
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--text-primary);
+  background-color: var(--input-bg);
   transition: all 0.2s;
 }
 
 .form-group input:disabled,
 .form-group textarea:disabled {
-  background-color: #f9fafb;
+  background-color: var(--bg-secondary);
   cursor: not-allowed;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -321,20 +322,20 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: #f3f4f6;
+  background-color: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 3rem;
 }
 
 .upload-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.375rem;
-  background: white;
-  color: #4b5563;
+  background: var(--card-bg);
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -343,8 +344,8 @@ export default {
 }
 
 .upload-btn:hover:not(:disabled) {
-  background: #f3f4f6;
-  color: #3b82f6;
+  background: var(--hover-bg);
+  color: var(--primary-color);
 }
 
 .upload-btn:disabled {

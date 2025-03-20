@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import './assets/styles/main.css'
+import './assets/styles/themes.css'
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import { createPinia } from 'pinia'  // 导入 Pinia
@@ -93,6 +94,19 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 // 创建 Pinia 实例
 const pinia = createPinia()
 
+// 初始化主题
+const initTheme = () => {
+  const savedTheme = localStorage.getItem('theme') || 'system'
+  if (savedTheme === 'system') {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+  } else {
+    document.documentElement.setAttribute('data-theme', savedTheme)
+  }
+}
+
+// 初始化主题
+initTheme()
 
 app
   .use(router)

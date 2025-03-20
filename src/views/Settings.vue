@@ -20,6 +20,7 @@
                   type="radio" 
                   v-model="settings.theme" 
                   value="light"
+                  @change="handleThemeChange"
                 >
                 <span>浅色</span>
               </label>
@@ -28,6 +29,7 @@
                   type="radio" 
                   v-model="settings.theme" 
                   value="dark"
+                  @change="handleThemeChange"
                 >
                 <span>深色</span>
               </label>
@@ -36,6 +38,7 @@
                   type="radio" 
                   v-model="settings.theme" 
                   value="system"
+                  @change="handleThemeChange"
                 >
                 <span>跟随系统</span>
               </label>
@@ -49,111 +52,9 @@
                 <input 
                   type="checkbox" 
                   v-model="settings.sidebarExpanded"
+                  @change="handleSidebarChange"
                 >
                 <span class="toggle-slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>图表默认布局</label>
-            <select v-model="settings.defaultLayout">
-              <option value="force-directed">力导向图</option>
-              <option value="circular">环形布局</option>
-              <option value="grid">网格布局</option>
-              <option value="tree">树形布局</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <div class="section-header">
-          <h3>通知设置</h3>
-        </div>
-
-        <div class="settings-form">
-          <div class="form-group">
-            <label>邮件通知</label>
-            <div class="toggle-group">
-              <label class="toggle-label">
-                <input 
-                  type="checkbox" 
-                  v-model="settings.emailNotifications"
-                >
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>浏览器通知</label>
-            <div class="toggle-group">
-              <label class="toggle-label">
-                <input 
-                  type="checkbox" 
-                  v-model="settings.browserNotifications"
-                >
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>通知频率</label>
-            <select v-model="settings.notificationFrequency">
-              <option value="realtime">实时</option>
-              <option value="hourly">每小时</option>
-              <option value="daily">每天</option>
-              <option value="weekly">每周</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <div class="section-header">
-          <h3>数据设置</h3>
-        </div>
-
-        <div class="settings-form">
-          <div class="form-group">
-            <label>自动保存间隔</label>
-            <select v-model="settings.autoSaveInterval">
-              <option value="1">1分钟</option>
-              <option value="5">5分钟</option>
-              <option value="15">15分钟</option>
-              <option value="30">30分钟</option>
-              <option value="60">1小时</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>数据导出格式</label>
-            <div class="checkbox-group">
-              <label class="checkbox-label">
-                <input 
-                  type="checkbox" 
-                  v-model="settings.exportFormats" 
-                  value="json"
-                >
-                <span>JSON</span>
-              </label>
-              <label class="checkbox-label">
-                <input 
-                  type="checkbox" 
-                  v-model="settings.exportFormats" 
-                  value="csv"
-                >
-                <span>CSV</span>
-              </label>
-              <label class="checkbox-label">
-                <input 
-                  type="checkbox" 
-                  v-model="settings.exportFormats" 
-                  value="graphml"
-                >
-                <span>GraphML</span>
               </label>
             </div>
           </div>
@@ -164,29 +65,82 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toastification'
+
 export default {
   name: 'SettingsPage',
+  setup() {
+    const toast = useToast()
+    return { toast }
+  },
   data() {
     return {
       settings: {
-        theme: 'light',
-        sidebarExpanded: true,
-        defaultLayout: 'force-directed',
-        emailNotifications: true,
-        browserNotifications: true,
-        notificationFrequency: 'realtime',
-        autoSaveInterval: '5',
-        exportFormats: ['json', 'csv']
+        theme: localStorage.getItem('theme') || 'system',
+        sidebarExpanded: localStorage.getItem('sidebarExpanded') === 'true'
       }
     }
   },
-  watch: {
-    settings: {
-      handler(newSettings) {
-        console.log('设置已更新:', newSettings)
-        // 这里可以添加保存设置的逻辑
-      },
-      deep: true
+  created() {
+    // 初始化主题
+    this.initTheme()
+    // 如果是system主题，添加系统主题变化的监听
+    if (this.settings.theme === 'system') {
+      this.addSystemThemeListener()
+    }
+  },
+  beforeUnmount() {
+    // 移除系统主题变化的监听
+    this.removeSystemThemeListener()
+  },
+  methods: {
+    initTheme() {
+      if (this.settings.theme === 'system') {
+        // 获取系统主题
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+      } else {
+        document.documentElement.setAttribute('data-theme', this.settings.theme)
+      }
+    },
+    handleThemeChange() {
+      // 保存设置到localStorage
+      localStorage.setItem('theme', this.settings.theme)
+      
+      // 如果是system，添加监听器
+      if (this.settings.theme === 'system') {
+        this.addSystemThemeListener()
+        // 立即应用系统主题
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+      } else {
+        // 移除系统主题监听器
+        this.removeSystemThemeListener()
+        // 直接应用选择的主题
+        document.documentElement.setAttribute('data-theme', this.settings.theme)
+      }
+      
+      this.toast.success('主题设置已更新')
+    },
+    handleSidebarChange() {
+      // 保存设置到localStorage
+      localStorage.setItem('sidebarExpanded', this.settings.sidebarExpanded)
+      // 发布侧边栏状态变化事件
+      this.$root.$emit('sidebar-expanded-changed', this.settings.sidebarExpanded)
+      this.toast.success('侧边栏设置已更新')
+    },
+    addSystemThemeListener() {
+      // 添加系统主题变化的监听
+      this.systemThemeListener = (e) => {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light')
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(this.systemThemeListener)
+    },
+    removeSystemThemeListener() {
+      // 移除系统主题变化的监听
+      if (this.systemThemeListener) {
+        window.matchMedia('(prefers-color-scheme: dark)').removeListener(this.systemThemeListener)
+      }
     }
   }
 }
@@ -206,17 +160,17 @@ export default {
 .settings-header h2 {
   font-size: 1.875rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .settings-header p {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0.5rem 0 0;
 }
 
 .settings-section {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
@@ -230,7 +184,7 @@ export default {
 .section-header h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -248,43 +202,23 @@ export default {
 
 .form-group label {
   font-weight: 500;
-  color: #4b5563;
+  color: var(--text-primary);
 }
 
-.form-group select {
-  padding: 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
-  font-size: 1rem;
-  color: #1f2937;
-  background-color: white;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.form-group select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.radio-group,
-.checkbox-group {
+.radio-group {
   display: flex;
   gap: 1.5rem;
 }
 
-.radio-label,
-.checkbox-label {
+.radio-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  color: #4b5563;
+  color: var(--text-primary);
 }
 
-.radio-label input[type="radio"],
-.checkbox-label input[type="checkbox"] {
+.radio-label input[type="radio"] {
   width: 1rem;
   height: 1rem;
   margin: 0;
@@ -315,7 +249,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #e5e7eb;
+  background-color: var(--toggle-bg);
   transition: .4s;
   border-radius: 1.5rem;
 }
@@ -333,7 +267,7 @@ export default {
 }
 
 input:checked + .toggle-slider {
-  background-color: #3b82f6;
+  background-color: var(--primary-color);
 }
 
 input:checked + .toggle-slider:before {
