@@ -72,7 +72,7 @@
             <label>当前密码</label>
             <input 
               type="password" 
-              v-model="password.current" 
+              v-model="password.currentPassword" 
               :disabled="!isPasswordEditing"
               placeholder="请输入当前密码"
             >
@@ -82,7 +82,7 @@
             <label>新密码</label>
             <input 
               type="password" 
-              v-model="password.new" 
+              v-model="password.newPassword" 
               :disabled="!isPasswordEditing"
               placeholder="请输入新密码"
             >
@@ -92,7 +92,7 @@
             <label>确认新密码</label>
             <input 
               type="password" 
-              v-model="password.confirm" 
+              v-model="password.confirmPassword" 
               :disabled="!isPasswordEditing"
               placeholder="请再次输入新密码"
             >
@@ -105,17 +105,23 @@
 
 <script>
 import { useUserStore } from '../store/userStore'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'ProfilePage',
+  setup() {
+    const toast = useToast()
+    return { toast }
+  },
   data() {
     return {
       isEditing: false,
       isPasswordEditing: false,
       password: {
-        current: '',
-        new: '',
-        confirm: ''
+        email: '',
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
       }
     }
   },
@@ -143,10 +149,60 @@ export default {
     },
     togglePasswordEdit() {
       if (this.isPasswordEditing) {
-        // 保存密码更改
-        console.log('保存密码更改:', this.password)
+        this.updatePassword()
+      } else {
+        // 重置密码表单
+        this.password = {
+          email: this.userInfo.email,
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        }
+        this.isPasswordEditing = true
       }
-      this.isPasswordEditing = !this.isPasswordEditing
+    },
+    async updatePassword() {
+      // 表单验证
+      if (!this.password.currentPassword) {
+        this.toast.error('请输入当前密码')
+        return
+      }
+      if (!this.password.newPassword) {
+        this.toast.error('请输入新密码')
+        return
+      }
+      if (!this.password.confirmPassword) {
+        this.toast.error('请确认新密码')
+        return
+      }
+      if (this.password.newPassword !== this.password.confirmPassword) {
+        this.toast.error('两次输入的新密码不一致')
+        return
+      }
+      if (this.password.newPassword.length < 6) {
+        this.toast.error('新密码长度不能少于6个字符')
+        return
+      }
+      if (this.password.newPassword === this.password.currentPassword) {
+        this.toast.error('新密码不能与当前密码相同')
+        return
+      }
+
+      try {
+        const userStore = useUserStore()
+        await userStore.updatePassword(this.password)
+        this.toast.success('密码修改成功')
+        this.isPasswordEditing = false
+        // 清空密码表单
+        this.password = {
+          email: this.userInfo.email,
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        }
+      } catch (error) {
+        this.toast.error(error.message || '密码修改失败')
+      }
     }
   }
 }

@@ -26,6 +26,25 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    async updatePassword(passwordData) {
+      try {
+        const response = await axios.post('http://localhost:8082/updateUserPassword', {
+          email: this.userData.email,
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword
+        })
+        
+        if (response.data.code === 200) {
+          return { success: true, message: '密码修改成功' }
+        } else {
+          throw new Error(response.data.message || '密码修改失败')
+        }
+      } catch (err) {
+        console.error('修改密码失败:', err)
+        throw new Error(err.response?.data?.message || err.message || '修改密码失败')
+      }
+    },
+
     async register(userData) {
       this.userData = userData // 存储用户数据
       return Promise.resolve() // 确保返回 Promise，以便 `.then()` 可以继续执行

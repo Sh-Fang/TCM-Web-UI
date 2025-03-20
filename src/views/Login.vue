@@ -81,12 +81,16 @@
       }
     },
     created() {
-      // 从路由参数中获取邮箱和密码
+      // 优先使用路由参数中的数据（来自注册页面）
       const { email, password } = this.$route.query;
-      if (email) this.email = email;
-      if (password) this.password = password;
+      if (email || password) {
+        this.email = email || '';
+        this.password = password || '';
+        this.rememberMe = true; 
+        return; // 如果有路由参数，就不再读取localStorage
+      }
 
-      // 尝试从 localStorage 获取保存的凭据
+      // 如果没有路由参数，才尝试从localStorage获取保存的凭据
       const savedCredentials = localStorage.getItem('userCredentials');
       if (savedCredentials) {
         const { email, password } = JSON.parse(savedCredentials);
@@ -147,9 +151,12 @@
         } catch (error) {
           if (error.response) {
             // 请求已发出，且服务器返回了响应（非 2xx 状态码）
-            if (error.response.status === 401) {
+            if (error.response.status === 404) {
               toast.error('账号未注册');
               this.errors = { general: '账号未注册' };
+            } else if (error.response.status === 401) {
+              toast.error('密码错误');
+              this.errors = { general: '密码错误' };
             } else {
               toast.error('系统繁忙，请稍后重试');
               this.errors = { general: '系统繁忙，请稍后重试' };

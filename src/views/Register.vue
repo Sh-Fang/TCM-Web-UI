@@ -141,15 +141,19 @@ export default {
           };
           await userStore.register(userData);
 
-          // 注册成功后，跳转到登录页面
-          toast.success('注册成功，请登录');
-          this.$router.push({
-            path: '/login',
-            query: {
-              email: this.email,
-              password: this.password
-            }
-          });
+          // 注册成功后，跳转到登录页面并传递参数
+          toast.success('注册成功，即将跳转到登录页面');
+          
+          // 使用setTimeout确保toast消息能够显示
+          setTimeout(() => {
+            this.$router.push({
+              path: '/login',
+              query: {
+                email: this.email,
+                password: this.password
+              }
+            });
+          }, 1500); // 延迟1.5秒跳转，让用户看到成功提示
         } else {
           this.errors = { general: '注册失败，请稍后重试' };
           toast.error('注册失败，请稍后重试');
