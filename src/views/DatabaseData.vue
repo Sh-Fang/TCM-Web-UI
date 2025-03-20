@@ -35,7 +35,7 @@
                 <td>{{ dataset.description }}</td>
                 <td>{{ dataset.created_at }}</td>
                 <td class="action-buttons">
-                  <button class="btn btn-view" @click="viewDataset(dataset.id)">
+                  <button class="view-btn" @click="viewDataset(dataset.id)">
                     <font-awesome-icon icon="eye" /> 查看
                   </button>
                 </td>
@@ -77,10 +77,10 @@
                 <td>{{ formatFileSize(graph.file_size) }}</td>
                 <td>{{ graph.uploaded_at }}</td>
                 <td class="action-buttons">
-                  <button class="btn btn-view" @click="viewDataGraph(graph.id)">
+                  <button class="view-btn" @click="viewDataGraph(graph.id)">
                     <font-awesome-icon icon="eye" /> 查看
                   </button>
-                  <button class="btn btn-download" @click="downloadGraph(graph.id, 'data_graph')">
+                  <button class="download-btn" @click="downloadGraph(graph.id, 'data_graph')">
                     <font-awesome-icon icon="download" /> 下载
                   </button>
                 </td>
@@ -122,10 +122,10 @@
                 <td>{{ formatFileSize(graph.file_size) }}</td>
                 <td>{{ graph.uploaded_at }}</td>
                 <td class="action-buttons">
-                  <button class="btn btn-view" @click="viewQueryGraph(graph.id)">
+                  <button class="view-btn" @click="viewQueryGraph(graph.id)">
                     <font-awesome-icon icon="eye" /> 查看
                   </button>
-                  <button class="btn btn-download" @click="downloadGraph(graph.id, 'query_graph')">
+                  <button class="download-btn" @click="downloadGraph(graph.id, 'query_graph')">
                     <font-awesome-icon icon="download" /> 下载
                   </button>
                 </td>
@@ -721,53 +721,96 @@ export default {
 
 .data-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin-top: 1rem;
-}
-
-.data-table th,
-.data-table td {
-  padding: 0.75rem 1rem;
-  text-align: center;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 .data-table th {
   background-color: var(--bg-secondary);
-  font-weight: 600;
   color: var(--text-secondary);
+  font-weight: 500;
+  text-align: center;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.875rem;
 }
 
-.data-table tr:hover {
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
   background-color: var(--hover-bg);
 }
 
 .btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  cursor: pointer;
+  padding: 0.625rem 1rem;
   border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px var(--shadow-color);
+}
+
+.btn svg {
+  font-size: 0.875rem;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px var(--shadow-color);
 }
 
 .btn-view {
   background-color: var(--primary-color);
   color: var(--text-inverse);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.btn-view svg {
-  margin-right: 0.25rem;
+  border: 1px solid var(--primary-color);
 }
 
 .btn-view:hover {
   background-color: var(--primary-color-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.btn-download {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-download:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
 }
 
 .filter-container {
@@ -781,12 +824,8 @@ export default {
 .filter-group {
   display: flex;
   align-items: center;
-  background-color: var(--bg-secondary);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid var(--border-color);
+  gap: 0.5rem;
+  margin-right: 1.5rem;
 }
 
 .filter-group label {
@@ -1027,7 +1066,7 @@ export default {
 
 .action-buttons {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   justify-content: center;
 }
 
@@ -1048,5 +1087,61 @@ export default {
   background-color: var(--success-color-hover);
   transform: translateY(-1px);
   box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.view-btn {
+  background-color: #70B3FF;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  background-color: #5CA3FF;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(112, 179, 255, 0.2);
+}
+
+.view-btn:active {
+  transform: translateY(0);
+}
+
+.view-btn .btn-icon {
+  font-size: 0.875rem;
+}
+
+.download-btn {
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+  background-color: var(--success-color-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(var(--success-color-rgb), 0.2);
+}
+
+.download-btn:active {
+  transform: translateY(0);
+}
+
+.download-btn .btn-icon {
+  font-size: 0.875rem;
 }
 </style>

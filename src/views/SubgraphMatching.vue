@@ -67,93 +67,79 @@
       </div>
 
       <!-- 匹配参数设置 -->
-      <div class="parameter-card">
-        <div class="parameter-header">
-          <font-awesome-icon icon="sliders-h" class="parameter-icon" />
-          <h2>匹配参数设置</h2>
-        </div>
-        <div class="parameter-content">
-          <div class="parameters-grid">
-            <!-- 数值参数 -->
-            <div class="parameter-group">
-              <h3 class="group-title">数值参数</h3>
-              <div class="parameter-item">
-                <label class="parameter-label">最大匹配数量</label>
-                <input type="number" v-model="matchParams.maxMatchCount" min="1" class="parameter-input" />
+      <div class="parameter-section">
+        <div class="parameter-card">
+          <div class="parameter-header">
+            <font-awesome-icon icon="sliders-h" class="parameter-icon" />
+            <h2>匹配参数设置</h2>
+          </div>
+          <div class="parameter-content">
+            <div class="parameters-grid">
+              <!-- 数值参数 -->
+              <div class="parameter-group">
+                <h3 class="group-title">数值参数</h3>
+                <div class="parameter-item">
+                  <label class="parameter-label">最大匹配数量</label>
+                  <input type="number" v-model="matchParams.maxMatchCount" min="1" class="parameter-input" />
+                </div>
+                <div class="parameter-item">
+                  <label class="parameter-label">数据图占比 (%)</label>
+                  <input type="number" v-model="matchParams.dataGraphPercentage" min="0" max="100" class="parameter-input" />
+                </div>
+                <div class="parameter-item">
+                  <label class="parameter-label">索引构建时间限制 (秒)</label>
+                  <input type="number" v-model="matchParams.indexBuildTimeLimit" min="1" class="parameter-input" />
+                </div>
+                <div class="parameter-item">
+                  <label class="parameter-label">查询匹配时间限制 (秒)</label>
+                  <input type="number" v-model="matchParams.queryMatchTimeLimit" min="1" class="parameter-input" />
+                </div>
               </div>
-              <div class="parameter-item">
-                <label class="parameter-label">数据图占比 (%)</label>
-                <input type="number" v-model="matchParams.dataGraphPercentage" min="0" max="100" class="parameter-input" />
-              </div>
-              <div class="parameter-item">
-                <label class="parameter-label">索引构建时间限制 (秒)</label>
-                <input type="number" v-model="matchParams.indexBuildTimeLimit" min="1" class="parameter-input" />
-              </div>
-              <div class="parameter-item">
-                <label class="parameter-label">查询匹配时间限制 (秒)</label>
-                <input type="number" v-model="matchParams.queryMatchTimeLimit" min="1" class="parameter-input" />
-              </div>
-            </div>
 
-            <!-- 选择参数 -->
-            <div class="parameter-group">
-              <h3 class="group-title">选择参数</h3>
-              <div class="parameter-item">
-                <label class="parameter-label">结果模式</label>
-                <select v-model="matchParams.resultMode" class="parameter-select">
-                  <option value="qid">QID</option>
-                  <option value="time">TIME</option>
-                </select>
+              <!-- 选择参数 -->
+              <div class="parameter-group">
+                <h3 class="group-title">选择参数</h3>
+                <div class="parameter-item">
+                  <label class="parameter-label">结果模式</label>
+                  <select v-model="matchParams.resultMode" class="parameter-select">
+                    <option value="qid">QID</option>
+                    <option value="time">TIME</option>
+                  </select>
+                </div>
+                <div class="parameter-item">
+                  <label class="parameter-label">执行模式</label>
+                  <select v-model="matchParams.executionMode" class="parameter-select">
+                    <option value="count">COUNT</option>
+                    <option value="enum">ENUM</option>
+                  </select>
+                </div>
               </div>
-              <div class="parameter-item">
-                <label class="parameter-label">执行模式</label>
-                <select v-model="matchParams.executionMode" class="parameter-select">
-                  <option value="count">COUNT</option>
-                  <option value="enum">ENUM</option>
-                </select>
-              </div>
-            </div>
 
-            <!-- 布尔参数 -->
-            <div class="parameter-group">
-              <h3 class="group-title">布尔参数</h3>
-              <div class="parameter-item checkbox-item">
-                <label class="parameter-label">开启静态合并</label>
-                <label class="toggle-switch">
-                  <input type="checkbox" v-model="matchParams.enableStaticMerge">
-                  <span class="toggle-slider"></span>
-                </label>
+              <!-- 布尔参数 -->
+              <div class="parameter-group">
+                <h3 class="group-title">布尔参数</h3>
+                <div class="parameter-item checkbox-item">
+                  <label class="parameter-label">开启静态合并</label>
+                  <label class="toggle-switch">
+                    <input type="checkbox" v-model="matchParams.enableStaticMerge">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="parameter-item checkbox-item">
+                  <label class="parameter-label">开启动态合并</label>
+                  <label class="toggle-switch">
+                    <input type="checkbox" v-model="matchParams.enableDynamicMerge">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="parameter-item checkbox-item">
+                  <label class="parameter-label">返回匹配结果</label>
+                  <label class="toggle-switch">
+                    <input type="checkbox" v-model="matchParams.returnMatchResults">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
               </div>
-              <div class="parameter-item checkbox-item">
-                <label class="parameter-label">开启动态合并</label>
-                <label class="toggle-switch">
-                  <input type="checkbox" v-model="matchParams.enableDynamicMerge">
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-              <div class="parameter-item checkbox-item">
-                <label class="parameter-label">返回匹配结果</label>
-                <label class="toggle-switch">
-                  <input type="checkbox" v-model="matchParams.returnMatchResults">
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 输出格式 -->
-            <div class="parameter-group">
-              <h3 class="group-title">输出设置</h3>
-              <div class="parameter-item">
-                <label class="parameter-label">输出格式</label>
-                <select v-model="matchParams.outputFormat" class="parameter-select">
-                  <option value="JSON">JSON</option>
-                  <option value="TXT">TXT</option>
-                </select>
-              </div>
-              <p class="output-note">
-                <font-awesome-icon icon="info-circle" class="info-icon" />
-                匹配结果将在完成后通过下载按钮获取
-              </p>
             </div>
           </div>
         </div>
@@ -161,18 +147,29 @@
 
       <!-- 执行匹配 -->
       <div class="action-card">
-        <button 
-          class="match-btn" 
-          :disabled="!canStartMatching || isMatching"
-          @click="startMatching"
-        >
-          <font-awesome-icon 
-            :icon="isMatching ? 'spinner' : 'play'" 
-            :class="{ 'fa-spin': isMatching }" 
-            class="btn-icon" 
-          />
-          {{ isMatching ? '匹配中...' : '开始匹配' }}
-        </button>
+        <div class="action-content">
+          <div class="action-left">
+            <div class="output-settings">
+              <label class="parameter-label">输出格式</label>
+              <select v-model="matchParams.outputFormat" class="parameter-select">
+                <option value="JSON">JSON</option>
+                <option value="TXT">TXT</option>
+              </select>
+            </div>
+          </div>
+          <button 
+            class="match-btn" 
+            :disabled="!canStartMatching || isMatching"
+            @click="startMatching"
+          >
+            <font-awesome-icon 
+              :icon="isMatching ? 'spinner' : 'play'" 
+              :class="{ 'fa-spin': isMatching }" 
+              class="btn-icon" 
+            />
+            {{ isMatching ? '匹配中...' : '开始匹配' }}
+          </button>
+        </div>
 
         <!-- 进度条 -->
         <div v-if="isMatching" class="progress-container">
@@ -509,13 +506,17 @@ export default {
 .content-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .file-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+}
+
+.parameter-section {
+  width: 100%;
 }
 
 .file-card, .parameter-card, .action-card, .results-card {
@@ -610,15 +611,16 @@ export default {
 
 .parameters-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
 .parameter-group {
-  background: var(--bg-secondary);
+  background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 0.375rem;
-  padding: 1rem;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
 }
 
 .group-title {
@@ -728,38 +730,95 @@ input:checked + .toggle-slider:before {
 .action-card {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1.5rem;
+  gap: 2rem;
+  padding: 2rem;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.action-content {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem 2rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+}
+
+.action-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.output-settings {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.output-settings .parameter-label {
+  margin: 0;
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.output-settings .parameter-select {
+  width: 120px;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background-color: var(--card-bg);
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  border-color: var(--border-color);
+  transition: all 0.2s ease;
 }
 
 .match-btn {
-  padding: 0.75rem 2rem;
-  background-color: var(--primary-color);
+  padding: 0.875rem 3rem;
+  background-color: #4A9EFF;
   border: none;
-  border-radius: 0.375rem;
-  color: var(--text-inverse);
-  font-weight: 500;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
   min-width: 200px;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(74, 158, 255, 0.2);
 }
 
 .match-btn:hover:not(:disabled) {
-  background-color: var(--primary-color-hover);
+  background-color: #3B8EEF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 158, 255, 0.3);
+}
+
+.match-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(74, 158, 255, 0.2);
 }
 
 .match-btn:disabled {
-  background-color: var(--disabled-bg);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
   cursor: not-allowed;
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+}
+
+.match-btn .btn-icon {
+  font-size: 1.125rem;
 }
 
 .progress-container {
@@ -768,27 +827,30 @@ input:checked + .toggle-slider:before {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin: 0 auto;
 }
 
 .progress-bar {
   flex: 1;
-  height: 12px;
+  height: 8px;
   background-color: var(--bg-secondary);
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
+  border: 1px solid var(--border-color);
 }
 
 .progress-fill {
   height: 100%;
-  background-color: var(--primary-color);
+  background-color: #4A9EFF;
   transition: width 0.3s ease;
 }
 
 .progress-text {
-  font-weight: 500;
-  color: var(--text-secondary);
-  min-width: 45px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 48px;
   text-align: right;
+  font-size: 0.9375rem;
 }
 
 .results-summary {
@@ -1047,39 +1109,41 @@ input:checked + .toggle-slider:before {
   color: var(--primary-color);
 }
 
+@media (max-width: 1200px) {
+  .parameters-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
-  .subgraph-matching {
-    padding: 1rem;
+  .file-section {
+    grid-template-columns: 1fr;
   }
   
   .parameters-grid {
     grid-template-columns: 1fr;
   }
   
-  .file-section {
-    grid-template-columns: 1fr;
+  .action-content {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .action-left {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .output-settings {
+    width: auto;
+  }
+
+  .match-btn {
+    width: 100%;
   }
   
-  .results-summary {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .additional-metrics {
-    grid-template-columns: 1fr;
-  }
-  
-  .matches-table th, .matches-table td {
-    min-width: 150px;
-    width: 150px;
-    padding: 0.5rem 0.75rem;
-  }
-  
-  .tuple-label {
-    width: 70px;
-  }
-  
-  .tuple-row {
-    font-size: 0.8rem;
+  .progress-container {
+    max-width: 100%;
   }
 }
 </style>

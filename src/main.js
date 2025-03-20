@@ -42,7 +42,20 @@ import {
   faFileUpload,
   faCloudUploadAlt,
   faFileAlt,
-  faFolderOpen
+  faFolderOpen,
+  faDownload,
+  faSpinner,
+  faPlay,
+  faSort,
+  faArrowRight,
+  faDotCircle,
+  faLink,
+  faNetworkWired,
+  faStar,
+  faRulerHorizontal,
+  faObjectGroup,
+  faChartPie,
+  faStickyNote
 } from '@fortawesome/free-solid-svg-icons'
 import { 
   faGoogle, 
@@ -83,7 +96,20 @@ library.add(
   faFileUpload,
   faCloudUploadAlt,
   faFileAlt,
-  faFolderOpen
+  faFolderOpen,
+  faDownload,
+  faSpinner,
+  faPlay,
+  faSort,
+  faArrowRight,
+  faDotCircle,
+  faLink,
+  faNetworkWired,
+  faStar,
+  faRulerHorizontal,
+  faObjectGroup,
+  faChartPie,
+  faStickyNote
 )
 
 const app = createApp(App)
