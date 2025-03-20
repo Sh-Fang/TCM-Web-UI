@@ -137,7 +137,7 @@
               email: this.email
             };
             userStore.login(userData); // 调用 store 中的 login 方法
-            
+
             // 登录成功后，跳转到 graph-visualization 页面
             this.$router.push('/graph-visualization');
           } else {
@@ -148,8 +148,8 @@
           if (error.response) {
             // 请求已发出，且服务器返回了响应（非 2xx 状态码）
             if (error.response.status === 401) {
-              toast.error('用户名或密码错误');
-              this.errors = { general: '用户名或密码错误' };
+              toast.error('账号未注册');
+              this.errors = { general: '账号未注册' };
             } else {
               toast.error('系统繁忙，请稍后重试');
               this.errors = { general: '系统繁忙，请稍后重试' };

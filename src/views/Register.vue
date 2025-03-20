@@ -88,6 +88,7 @@
 <script>
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
+import { useUserStore } from '../store/userStore';
 
 export default {
   name: 'RegisterPage',
@@ -134,7 +135,11 @@ export default {
         });
 
         if (response.status === 200) {
-          await this.$store.dispatch('register', response.data);
+          const userStore = useUserStore();
+          await userStore.register(response.data);
+
+          // 注册成功后，跳转到登录页面
+          toast.success('注册成功，请登录');
           this.$router.push({
             path: '/login',
             query: {

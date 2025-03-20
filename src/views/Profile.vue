@@ -145,7 +145,9 @@ export default {
         const userStore = useUserStore()
         userStore.updateUserProfile({
           name: this.userInfo.name,
-          email: this.userInfo.email
+          email: this.userInfo.email,
+          phone: this.userInfo.phone,
+          bio: this.userInfo.bio
         })
       }
       this.isEditing = !this.isEditing

@@ -14,6 +14,7 @@ export const useUserStore = defineStore('user', {
     async updateUserProfile(profileData) {
       try {
         const response = await axios.post('http://localhost:8082/updateUserProfile', profileData)
+        console.log(response.data)
         if (response.data.code === 200) {
           this.userData = response.data.data // 更新 userData
         } else {
@@ -25,8 +26,14 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    async register(userData) {
+      this.userData = userData // 存储用户数据
+      return Promise.resolve() // 确保返回 Promise，以便 `.then()` 可以继续执行
+    },
+
     login(userData) {
-        this.userData = userData
+        this.userData.name = userData.name
+        this.userData.email = userData.email
     },
 
     logout() {
