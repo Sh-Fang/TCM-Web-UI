@@ -105,7 +105,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { useUserStore } from '../store/userStore'
+
 
 export default {
   name: 'DashboardPage',
@@ -118,12 +119,10 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      userInfo: state => state.user.userData || {
-        name: 'Guest',
-        email: 'guest@example.com'
-      }
-    })
+    userInfo() {
+      const userStore = useUserStore()
+      return userStore.userData // 直接从 Pinia store 获取数据
+    }
   },
   watch: {
     '$route'(to) {
@@ -162,12 +161,14 @@ export default {
     },
     handleLogout() {
       this.showLogoutConfirm = false;
-      this.$store.dispatch('logout')
+
+      const userStore = useUserStore()
+      userStore.logout()
         .then(() => {
           this.$router.push('/login');
         })
         .catch(error => {
-          console.error('退出登录失败:', error);
+          console.error('退出登录失败', error);
         });
     }
   }

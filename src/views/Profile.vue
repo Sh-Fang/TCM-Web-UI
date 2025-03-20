@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { useUserStore } from '../store/userStore'
 
 export default {
   name: 'ProfilePage',
@@ -125,12 +125,6 @@ export default {
     return {
       isEditing: false,
       isPasswordEditing: false,
-      userInfo: {
-        name: '',
-        email: '',
-        phone: '+86 123 4567 8900',
-        bio: '热爱技术，专注于图数据库和子图匹配研究。'
-      },
       password: {
         current: '',
         new: '',
@@ -139,26 +133,17 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      userData: state => state.user.userData
-    })
-  },
-  watch: {
-    userData: {
-      immediate: true,
-      handler(newValue) {
-        if (newValue) {
-          this.userInfo.name = newValue.name || ''
-          this.userInfo.email = newValue.email || ''
-        }
-      }
+    userInfo() {
+      const userStore = useUserStore()
+      return userStore.userData // 直接从 Pinia store 获取数据
     }
   },
   methods: {
     toggleEdit() {
       if (this.isEditing) {
         // 保存更改
-        this.$store.dispatch('updateUserProfile', {
+        const userStore = useUserStore()
+        userStore.updateUserProfile({
           name: this.userInfo.name,
           email: this.userInfo.email
         })

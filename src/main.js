@@ -2,10 +2,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
 import './assets/styles/main.css'
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import { createPinia } from 'pinia'  // 导入 Pinia
 
 // Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -90,8 +90,12 @@ const app = createApp(App)
 // 注册 Font Awesome 组件
 app.component('font-awesome-icon', FontAwesomeIcon)
 
+// 创建 Pinia 实例
+const pinia = createPinia()
+
+
 app
   .use(router)
-  .use(store)
+  .use(pinia)
   .use(Toast)
   .mount('#app')

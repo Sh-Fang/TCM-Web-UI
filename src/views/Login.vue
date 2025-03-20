@@ -68,6 +68,7 @@
   <script>
   import axios from 'axios';
   import { useToast } from 'vue-toastification';
+  import { useUserStore } from '../store/userStore'
 
   export default {
     name: 'LoginPage',
@@ -115,6 +116,8 @@
             password: this.password
           });
 
+          console.log(response);
+
           if (response.status === 200) {
             // 如果用户选择了"记住我"，保存凭据到 localStorage
             if (this.rememberMe) {
@@ -127,12 +130,13 @@
               localStorage.removeItem('userCredentials');
             }
 
-            // 登录成功后，将用户数据存储到 Vuex store
+            // 登录成功后，将用户数据存储到 Pinia store
+            const userStore = useUserStore()
             const userData = {
               name: response.data.user.name || this.email,  // 如果后端没有返回名字，使用邮箱作为名字
               email: this.email
             };
-            await this.$store.dispatch('login', userData);
+            userStore.login(userData); // 调用 store 中的 login 方法
             
             // 登录成功后，跳转到 graph-visualization 页面
             this.$router.push('/graph-visualization');
