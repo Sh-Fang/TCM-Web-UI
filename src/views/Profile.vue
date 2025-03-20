@@ -17,19 +17,6 @@
 
         <div class="profile-form">
           <div class="form-group">
-            <label>头像</label>
-            <div class="avatar-upload">
-              <div class="avatar-preview">
-                <font-awesome-icon icon="user-circle" />
-              </div>
-              <button class="upload-btn" :disabled="!isEditing">
-                <font-awesome-icon icon="camera" />
-                更换头像
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
             <label>姓名</label>
             <input 
               type="text" 
@@ -143,12 +130,14 @@ export default {
       if (this.isEditing) {
         // 保存更改
         const userStore = useUserStore()
-        userStore.updateUserProfile({
+        const requestBody = {
+          avatar: this.userInfo.avatar,
           name: this.userInfo.name,
           email: this.userInfo.email,
           phone: this.userInfo.phone,
           bio: this.userInfo.bio
-        })
+        }
+        userStore.updateUserProfile(requestBody)
       }
       this.isEditing = !this.isEditing
     },

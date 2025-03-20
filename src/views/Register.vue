@@ -136,7 +136,10 @@ export default {
 
         if (response.status === 200) {
           const userStore = useUserStore();
-          await userStore.register(response.data);
+          const userData = {
+            ...response.data
+          };
+          await userStore.register(userData);
 
           // 注册成功后，跳转到登录页面
           toast.success('注册成功，请登录');
