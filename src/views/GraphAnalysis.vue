@@ -5,6 +5,8 @@
       <p class="subtitle">分析数据流图和查询图的特征</p>
     </div>
 
+    <LoadingModal :isVisible="isParsingFile" message="正在解析文件，请稍候..." />
+
     <div class="content-container">
       <!-- Tab 切换按钮 -->
       <div class="tab-buttons">
@@ -298,9 +300,11 @@
 <script>
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
+import LoadingModal from "../components/LoadingModal.vue";
 
 export default {
   name: 'GraphAnalysisPage',
+  components: { LoadingModal },
   data() {
     return {
       activeTab: 'stream',
@@ -309,7 +313,8 @@ export default {
       streamGraphInfo: null,
       queryGraphInfo: null,
       isStreamAnalyzing: false,
-      isQueryAnalyzing: false
+      isQueryAnalyzing: false,
+      isParsingFile: false,
     }
   },
   methods: {
@@ -352,6 +357,8 @@ export default {
 
       this.isStreamAnalyzing = true;
       const formData = new FormData();
+
+      this.isParsingFile = true;
       formData.append('streamGraph', this.streamGraphFile);
 
       try {
@@ -375,6 +382,7 @@ export default {
         console.error('Error:', error);
       } finally {
         this.isStreamAnalyzing = false;
+        this.isParsingFile = false;
       }
     },
     async analyzeQueryGraph() {
@@ -620,8 +628,8 @@ export default {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
-  background-color: var(--primary-color);
-  color: var(--text-inverse);
+  background-color: #64C6DA;
+  color: white;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -634,14 +642,14 @@ export default {
 }
 
 .analyze-btn:hover:not(:disabled) {
-  background-color: var(--primary-color-hover);
+  background-color: #64C6DA;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .analyze-btn:disabled {
-  background-color: var(--bg-secondary);
-  color: var(--text-secondary);
+  background-color: #64C6DA;
+  color: white;
   cursor: not-allowed;
   border: 1px solid var(--border-color);
 }
