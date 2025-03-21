@@ -774,7 +774,7 @@ export default {
 
 .visualize-btn {
   padding: 0.75rem 2rem;
-  background-color: var(--primary-color);
+  background-color: #64C6DA;
   border: none;
   border-radius: 0.375rem;
   color: white;
@@ -787,11 +787,11 @@ export default {
 }
 
 .visualize-btn:hover:not(:disabled) {
-  background-color: var(--primary-color-hover);
+  background-color: #64C6DA;
 }
 
 .visualize-btn:disabled {
-  background-color: var(--primary-color-disabled);
+  background-color: #64C6DA;
   cursor: not-allowed;
 }
 

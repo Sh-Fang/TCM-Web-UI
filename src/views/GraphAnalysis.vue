@@ -489,7 +489,6 @@ export default {
   margin-top: 2rem;
   min-height: 500px;
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
   padding: 1rem;
   background: var(--card-bg);
 }
@@ -497,7 +496,9 @@ export default {
 .tab-buttons {
   display: flex;
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
+  margin: -1rem -1rem 1.5rem -1rem;
+  padding: 0;
+  background-color: var(--bg-secondary);
 }
 
 .tab-btn {
