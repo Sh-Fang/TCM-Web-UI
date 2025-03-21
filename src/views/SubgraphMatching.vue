@@ -616,7 +616,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--disabled-bg);
+  background-color: #FF6363;
   transition: .4s;
   border-radius: 24px;
 }
@@ -628,7 +628,7 @@ export default {
   width: 16px;
   left: 4px;
   bottom: 4px;
-  background-color: var(--bg-primary);
+  background-color: #FFFFFF;
   transition: .4s;
   border-radius: 50%;
 }
@@ -639,15 +639,18 @@ input:checked + .toggle-slider {
 
 input:checked + .toggle-slider:before {
   transform: translateX(26px);
+  background-color: var(--bg-primary);
 }
 
 .toggle-switch input:disabled + .toggle-slider {
   cursor: not-allowed;
   opacity: 0.6;
+  background-color: #FF0000;
 }
 
 .toggle-switch input:disabled + .toggle-slider:before {
   cursor: not-allowed;
+  background-color: #FFFFFF;
 }
 
 .toggle-switch input:disabled {
@@ -655,11 +658,10 @@ input:checked + .toggle-slider:before {
 }
 
 .toggle-switch input:disabled + .toggle-slider:hover {
-  background-color: var(--disabled-bg);
+  background-color: #FF0000;
 }
 
 .toggle-switch input:disabled + .toggle-slider:before {
-  background-color: var(--bg-primary);
   transform: translateX(0);
 }
 
