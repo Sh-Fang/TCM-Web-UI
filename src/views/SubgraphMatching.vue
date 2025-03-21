@@ -70,7 +70,7 @@
       <div class="parameter-section">
         <div class="parameter-card">
           <div class="parameter-header">
-            <font-awesome-icon icon="sliders-h" class="parameter-icon" />
+            <font-awesome-icon icon="sliders" class="parameter-icon" />
             <h2>匹配参数设置</h2>
           </div>
           <div class="parameter-content">
@@ -135,7 +135,11 @@
                 <div class="parameter-item checkbox-item">
                   <label class="parameter-label">返回匹配结果</label>
                   <label class="toggle-switch">
-                    <input type="checkbox" v-model="matchParams.returnMatchResults">
+                    <input 
+                      type="checkbox" 
+                      v-model="matchParams.returnMatchResults"
+                      :disabled="matchParams.executionMode !== 'enum'"
+                    >
                     <span class="toggle-slider"></span>
                   </label>
                 </div>
@@ -190,61 +194,61 @@
           <div class="results-summary">
             <div class="result-item">
               <span class="result-label">匹配总数</span>
-              <span class="result-value">{{ matchResults.totalMatches }}</span>
+              <span class="result-value">{{ matchResults.statistical_info.match_count }}</span>
             </div>
             <div class="result-item">
               <span class="result-label">索引构建时间</span>
-              <span class="result-value">{{ matchResults.indexBuildTime }} ms</span>
+              <span class="result-value">{{ matchResults.statistical_info.index_time}} ms</span>
             </div>
             <div class="result-item">
               <span class="result-label">查询匹配时间</span>
-              <span class="result-value">{{ matchResults.queryMatchTime }} ms</span>
+              <span class="result-value">{{ matchResults.statistical_info.online_time }} ms</span>
             </div>
             <div class="result-item">
               <span class="result-label">内存使用</span>
-              <span class="result-value">{{ formatMemory(matchResults.memoryUsage) }}</span>
+              <span class="result-value">{{ matchResults.statistical_info.memory_use }} MB</span>
             </div>
           </div>
           
           <div class="results-summary additional-metrics">
             <div class="result-item">
               <span class="result-label">数据流图边数</span>
-              <span class="result-value">{{ matchResults.streamGraphEdges }}</span>
+              <span class="result-value">{{ matchResults.statistical_info.total_s_edges }}</span>
             </div>
             <div class="result-item">
               <span class="result-label">查询图边数</span>
-              <span class="result-value">{{ matchResults.queryGraphEdges }}</span>
+              <span class="result-value">{{ matchResults.statistical_info.total_q_edges }}</span>
             </div>
             <div class="result-item">
               <span class="result-label">有效边占比</span>
-              <span class="result-value">{{ matchResults.effectiveEdgeRatio }}%</span>
+              <span class="result-value">{{ matchResults.statistical_info.valid_percentage }} %</span>
             </div>
           </div>
 
-          <div v-if="matchParams.returnMatchResults && matchResults.matches" class="matches-list">
+          <div v-if="matchParams.returnMatchResults && matchResults.all_match_result.all_match_result" class="matches-list">
             <h3>匹配详情</h3>
-            <div v-if="matchResults.matches.length > 0" class="matches-table-container">
+            <div v-if="matchResults.all_match_result.all_match_result.length > 0" class="matches-table-container">
               <div class="matches-table-scroll">
                 <table class="matches-table">
                   <thead>
                     <tr>
                       <th class="id-column">ID</th>
-                      <th v-for="(_, index) in Array(matchResults.queryGraphEdges)" :key="index">
+                      <th v-for="(_, index) in matchResults.all_match_result.all_match_result" :key="index">
                         QID {{ index + 1 }}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(match, index) in matchResults.matches" :key="index">
+                    <tr v-for="(match, index) in matchResults.all_match_result.all_match_result" :key="index">
                       <td class="id-column">{{ index + 1 }}</td>
-                      <td v-for="(edge, edgeIndex) in match.edges" :key="edgeIndex" class="edge-cell">
+                      <td v-for="(edge, edgeIndex) in match" :key="edgeIndex" class="edge-cell">
                         <div class="edge-tuple">
-                          <div class="tuple-row"><span class="tuple-label">src_id: </span>{{ edge[0] }}</div>
-                          <div class="tuple-row"><span class="tuple-label">tar_id: </span>{{ edge[1] }}</div>
-                          <div class="tuple-row"><span class="tuple-label">e_lab: </span>{{ edge[2] }}</div>
-                          <div class="tuple-row"><span class="tuple-label">src_lab: </span>{{ edge[3] }}</div>
-                          <div class="tuple-row"><span class="tuple-label">tar_lab: </span>{{ edge[4] }}</div>
-                          <div class="tuple-row"><span class="tuple-label">timestamp: </span>{{ edge[5] }}</div>
+                          <div class="tuple-row"><span class="tuple-label">src_id: </span>{{ edge["src_id"] }}</div>
+                          <div class="tuple-row"><span class="tuple-label">tar_id: </span>{{ edge["tar_id"] }}</div>
+                          <div class="tuple-row"><span class="tuple-label">e_lab: </span>{{ edge["e_lab"] }}</div>
+                          <div class="tuple-row"><span class="tuple-label">src_lab: </span>{{ edge["src_lab"] }}</div>
+                          <div class="tuple-row"><span class="tuple-label">tar_lab: </span>{{ edge["tar_lab"] }}</div>
+                          <div class="tuple-row"><span class="tuple-label">timestamp: </span>{{ edge["timestamp"] }}</div>
                         </div>
                       </td>
                     </tr>
@@ -268,7 +272,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 import { useToast } from 'vue-toastification';
 
 export default {
@@ -279,11 +283,11 @@ export default {
       queryGraphFile: null,
       matchParams: {
         maxMatchCount: 100,
-        dataGraphPercentage: 50,
-        indexBuildTimeLimit: 60,
-        queryMatchTimeLimit: 60,
+        dataGraphPercentage: 60,
+        indexBuildTimeLimit: 3600,
+        queryMatchTimeLimit: 3600,
         resultMode: 'qid',
-        executionMode: 'count',
+        executionMode: 'enum',
         enableStaticMerge: true,
         enableDynamicMerge: true,
         returnMatchResults: true,
@@ -291,8 +295,19 @@ export default {
       },
       isMatching: false,
       matchProgress: 0,
-      progressInterval: null,
       matchResults: null
+    }
+  },
+  watch: {
+    'matchParams.executionMode': {
+      handler(newMode) {
+        if (newMode !== 'enum') {
+          this.matchParams.returnMatchResults = false;
+        } else {
+          this.matchParams.returnMatchResults = true;
+        }
+      },
+      immediate: true
     }
   },
   computed: {
@@ -330,154 +345,75 @@ export default {
         event.target.value = '';
         return;
       }
-
       this.queryGraphFile = file;
     },
-    triggerFolderSelect() {
-      this.$refs.folderInput.click();
-    },
-    handleFolderSelect(event) {
-      const files = event.target.files;
-      if (files.length > 0) {
-        // 获取第一个文件的路径，并提取其目录
-        const path = files[0].webkitRelativePath;
-        const folderPath = path.split('/')[0];
-        
-        // 设置输出路径
-        this.matchParams.outputPath = folderPath;
-        
-        const toast = useToast();
-        toast.success(`已选择文件夹: ${folderPath}`);
-      }
-      // 清空选择，以便下次可以选择同一文件夹
-      event.target.value = '';
-    },
-    openFolderDialog() {
-      // 使用新的文件夹选择方法
-      this.triggerFolderSelect();
-    },
     async startMatching() {
-      // 移除环境检查，始终使用模拟数据
-      // if (!this.canStartMatching) return;
+      if (!this.canStartMatching) return;
 
       this.isMatching = true;
       this.matchProgress = 0;
-      
+
+      const formData = new FormData();
+      formData.append('streamGraph', this.streamGraphFile);
+      formData.append('queryGraph', this.queryGraphFile);
+      const params = {
+        max_match_count: this.matchParams.maxMatchCount,
+        data_percent: this.matchParams.dataGraphPercentage / 100,
+        index_time_limit: this.matchParams.indexBuildTimeLimit,
+        online_time_limit: this.matchParams.queryMatchTimeLimit,
+        result_mode: this.matchParams.resultMode,
+        execute_mode: this.matchParams.executionMode,
+        is_using_static_merge: this.matchParams.enableStaticMerge,
+        is_using_dynamic_merge: this.matchParams.enableDynamicMerge,
+        is_return_match_result: this.matchParams.returnMatchResults,
+        output_format: this.matchParams.outputFormat
+      };
+      formData.append('params', JSON.stringify(params));
+
       try {
-        // 始终使用模拟数据进行测试
-        await this.simulateMatching();
+        // 每秒查询一次进度
+        const progressInterval = setInterval(async () => {
+          try {
+            const progressResponse = await axios.get('http://localhost:8082/progress');
+            if (progressResponse.status === 200) {
+              console.log(progressResponse.data.progress);
+              this.matchProgress = parseInt(progressResponse.data.progress) || 0;
+            }
+          } catch (error) {
+            console.error('Progress query error:', error);
+          }
+        }, 500); // 每秒查询一次进度
+
+        const response = await axios.post('http://localhost:8082/match', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        // 主匹配请求完成后，使用 clearInterval 停止进度查询
+        clearInterval(progressInterval);
+
+        if (response.status === 200) {
+          this.matchResults = response.data;
+          console.log(this.matchResults);
+        }
       } catch (error) {
         console.error('Error:', error);
         const toast = useToast();
         toast.error('匹配过程中发生错误');
-      }
-    },
-    // 模拟匹配过程
-    async simulateMatching() {
-      // 模拟进度更新
-      this.progressInterval = setInterval(() => {
-        if (this.matchProgress < 100) {
-          this.matchProgress += 60;
-          if (this.matchProgress > 100) {
-            this.matchProgress = 100;
-          }
-        } else {
-          clearInterval(this.progressInterval);
-          this.progressInterval = null;
-          
-          // 模拟匹配完成
-          setTimeout(() => {
-            this.matchResults = this.generateMockResults();
-            this.isMatching = false;
-            const toast = useToast();
-            toast.success('匹配完成（模拟数据）');
-          }, 500);
-        }
-      }, 800);
-    },
-    // 生成模拟结果数据
-    generateMockResults() {
-      // 生成随机匹配数量
-      const totalMatches = Math.floor(Math.random() * 20) + 1;
-      
-      // 生成随机边数
-      const streamGraphEdges = Math.floor(Math.random() * 5000) + 1000;
-      const queryGraphEdges = Math.floor(Math.random() * 45) + 5; // 5-50条边，模拟真实场景
-      const effectiveEdgeRatio = Math.floor(Math.random() * 60) + 40; // 40%-100%
-      
-      // 根据参数设置生成结果
-      const resultData = {
-        totalMatches,
-        indexBuildTime: Math.floor(Math.random() * 1000) + 100, // 100-1100ms
-        queryMatchTime: Math.floor(Math.random() * 5000) + 500, // 500-5500ms
-        memoryUsage: Math.floor(Math.random() * 100000000) + 10000000, // 10MB-110MB
-        streamGraphEdges,
-        queryGraphEdges,
-        effectiveEdgeRatio
-      };
-      
-      // 只有在需要返回匹配结果时才生成匹配详情
-      if (this.matchParams.returnMatchResults) {
-        const matches = [];
-        for (let i = 0; i < totalMatches; i++) {
-          // 为每个查询边生成一个6元组
-          const edges = [];
-          for (let j = 0; j < queryGraphEdges; j++) {
-            // 生成6元组 (src_id, src_label, src_type, dst_id, dst_label, edge_id)
-            const srcId = Math.floor(Math.random() * 1000000) + 500000;
-            const srcLabel = Math.floor(Math.random() * 10000) + 1000;
-            const eLabel = Math.floor(Math.random() * 10);
-            const dstId = Math.floor(Math.random() * 1000000) + 500000;
-            const dstLabel = Math.floor(Math.random() * 10000) + 1000;
-            const timestamp = Math.floor(Math.random() * 10000000) + 1000000;
-            
-            edges.push([srcId, srcLabel, eLabel, dstId, dstLabel, timestamp]);
-          }
-          
-          matches.push({ edges });
-        }
-        
-        resultData.matches = matches;
-      }
-      
-      return resultData;
-    },
-    startProgressPolling() {
-      // 移除此方法的内容，因为我们直接在simulateMatching中处理进度
-    },
-    formatMemory(bytes) {
-      if (bytes === 0) return '0 B';
-      const k = 1024;
-      const sizes = ['B', 'KB', 'MB', 'GB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      } finally {
+        this.isMatching = false;
+      } 
     },
     downloadResults() {
-      if (!this.matchResults) return;
-      
-      // 创建一个Blob对象
-      const blob = new Blob([JSON.stringify(this.matchResults, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      
-      // 创建一个临时下载链接
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `subgraph-matches-${new Date().toISOString().slice(0, 10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      
-      // 清理
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 0);
+      console.log("downloadResults");
     }
   },
   beforeUnmount() {
     // 确保组件销毁时清除轮询
-    if (this.progressInterval) {
-      clearInterval(this.progressInterval);
-    }
+    // if (this.progressInterval) {
+    //   clearInterval(this.progressInterval);
+    // }
   }
 }
 </script>
@@ -702,6 +638,32 @@ input:checked + .toggle-slider {
 }
 
 input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-switch input:disabled + .toggle-slider {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.toggle-switch input:disabled + .toggle-slider:before {
+  cursor: not-allowed;
+}
+
+.toggle-switch input:disabled {
+  cursor: not-allowed;
+}
+
+.toggle-switch input:disabled + .toggle-slider:hover {
+  background-color: var(--disabled-bg);
+}
+
+.toggle-switch input:disabled + .toggle-slider:before {
+  background-color: var(--bg-primary);
+  transform: translateX(0);
+}
+
+.toggle-switch input:checked:disabled + .toggle-slider:before {
   transform: translateX(26px);
 }
 

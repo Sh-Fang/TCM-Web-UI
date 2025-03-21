@@ -55,7 +55,9 @@ import {
   faRulerHorizontal,
   faObjectGroup,
   faChartPie,
-  faStickyNote
+  faStickyNote,
+  faSliders,
+  faCheckCircle
 } from '@fortawesome/free-solid-svg-icons'
 import { 
   faGoogle, 
@@ -109,7 +111,9 @@ library.add(
   faRulerHorizontal,
   faObjectGroup,
   faChartPie,
-  faStickyNote
+  faStickyNote,
+  faSliders,
+  faCheckCircle
 )
 
 const app = createApp(App)
