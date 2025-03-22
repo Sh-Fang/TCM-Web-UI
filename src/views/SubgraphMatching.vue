@@ -15,13 +15,8 @@
           </div>
           <div class="file-content">
             <div class="file-input-wrapper">
-              <input
-                type="file"
-                ref="streamGraphInput"
-                accept=".txt"
-                style="display: none"
-                @change="handleStreamGraphSelect"
-              >
+              <input type="file" ref="streamGraphInput" accept=".txt" style="display: none"
+                @change="handleStreamGraphSelect">
               <button class="file-select-btn" @click="triggerStreamGraphSelect">
                 <font-awesome-icon icon="folder-open" class="btn-icon" />
                 选择文件
@@ -44,13 +39,8 @@
           </div>
           <div class="file-content">
             <div class="file-input-wrapper">
-              <input
-                type="file"
-                ref="queryGraphInput"
-                accept=".txt"
-                style="display: none"
-                @change="handleQueryGraphSelect"
-              >
+              <input type="file" ref="queryGraphInput" accept=".txt" style="display: none"
+                @change="handleQueryGraphSelect">
               <button class="file-select-btn" @click="triggerQueryGraphSelect">
                 <font-awesome-icon icon="folder-open" class="btn-icon" />
                 选择文件
@@ -84,7 +74,8 @@
                 </div>
                 <div class="parameter-item">
                   <label class="parameter-label">数据图占比 (%)</label>
-                  <input type="number" v-model="matchParams.dataGraphPercentage" min="0" max="100" class="parameter-input" />
+                  <input type="number" v-model="matchParams.dataGraphPercentage" min="0" max="100"
+                    class="parameter-input" />
                 </div>
                 <div class="parameter-item">
                   <label class="parameter-label">索引构建时间限制 (秒)</label>
@@ -135,11 +126,8 @@
                 <div class="parameter-item checkbox-item">
                   <label class="parameter-label">返回匹配结果</label>
                   <label class="toggle-switch">
-                    <input 
-                      type="checkbox" 
-                      v-model="matchParams.returnMatchResults"
-                      :disabled="matchParams.executionMode !== 'enum'"
-                    >
+                    <input type="checkbox" v-model="matchParams.returnMatchResults"
+                      :disabled="matchParams.executionMode !== 'enum'">
                     <span class="toggle-slider"></span>
                   </label>
                 </div>
@@ -161,16 +149,9 @@
               </select>
             </div>
           </div>
-          <button 
-            class="match-btn" 
-            :disabled="!canStartMatching || isMatching"
-            @click="startMatching"
-          >
-            <font-awesome-icon 
-              :icon="isMatching ? 'spinner' : 'play'" 
-              :class="{ 'fa-spin': isMatching }" 
-              class="btn-icon" 
-            />
+          <button class="match-btn" :disabled="!canStartMatching || isMatching" @click="startMatching">
+            <font-awesome-icon :icon="isMatching ? 'spinner' : 'play'" :class="{ 'fa-spin': isMatching }"
+              class="btn-icon" />
             {{ isMatching ? '匹配中...' : '开始匹配' }}
           </button>
         </div>
@@ -198,7 +179,7 @@
             </div>
             <div class="result-item">
               <span class="result-label">索引构建时间</span>
-              <span class="result-value">{{ matchResults.statistical_info.index_time}} ms</span>
+              <span class="result-value">{{ matchResults.statistical_info.index_time }} ms</span>
             </div>
             <div class="result-item">
               <span class="result-label">查询匹配时间</span>
@@ -209,7 +190,7 @@
               <span class="result-value">{{ matchResults.statistical_info.memory_use }} MB</span>
             </div>
           </div>
-          
+
           <div class="results-summary additional-metrics">
             <div class="result-item">
               <span class="result-label">数据流图边数</span>
@@ -225,7 +206,8 @@
             </div>
           </div>
 
-          <div v-if="matchParams.returnMatchResults && matchResults.all_match_result.all_match_result" class="matches-list">
+          <div v-if="matchParams.returnMatchResults && matchResults.all_match_result.all_match_result"
+            class="matches-list">
             <h3>匹配详情</h3>
             <div v-if="matchResults.all_match_result.all_match_result.length > 0" class="matches-table-container">
               <div class="matches-table-scroll">
@@ -248,7 +230,8 @@
                           <div class="tuple-row"><span class="tuple-label">e_lab: </span>{{ edge["e_lab"] }}</div>
                           <div class="tuple-row"><span class="tuple-label">src_lab: </span>{{ edge["src_lab"] }}</div>
                           <div class="tuple-row"><span class="tuple-label">tar_lab: </span>{{ edge["tar_lab"] }}</div>
-                          <div class="tuple-row"><span class="tuple-label">timestamp: </span>{{ edge["timestamp"] }}</div>
+                          <div class="tuple-row"><span class="tuple-label">timestamp: </span>{{ edge["timestamp"] }}
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -403,7 +386,7 @@ export default {
         toast.error('匹配过程中发生错误');
       } finally {
         this.isMatching = false;
-      } 
+      }
     },
     downloadResults() {
       console.log("downloadResults");
@@ -455,14 +438,19 @@ export default {
   width: 100%;
 }
 
-.file-card, .parameter-card, .action-card, .results-card {
+.file-card,
+.parameter-card,
+.action-card,
+.results-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   overflow: hidden;
 }
 
-.file-header, .parameter-header, .results-header {
+.file-header,
+.parameter-header,
+.results-header {
   padding: 1.5rem;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
@@ -471,7 +459,9 @@ export default {
   gap: 1rem;
 }
 
-.file-icon, .parameter-icon, .results-icon {
+.file-icon,
+.parameter-icon,
+.results-icon {
   font-size: 1.5rem;
 }
 
@@ -491,14 +481,18 @@ export default {
   color: var(--success-color);
 }
 
-.file-header h2, .parameter-header h2, .results-header h2 {
+.file-header h2,
+.parameter-header h2,
+.results-header h2 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.file-content, .parameter-content, .results-content {
+.file-content,
+.parameter-content,
+.results-content {
   padding: 1.5rem;
 }
 
@@ -534,7 +528,8 @@ export default {
   word-break: break-all;
 }
 
-.file-hint, .parameter-hint {
+.file-hint,
+.parameter-hint {
   color: var(--text-secondary);
   margin: 0;
   text-align: center;
@@ -580,7 +575,8 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-.parameter-input, .parameter-select {
+.parameter-input,
+.parameter-select {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid var(--border-color);
@@ -633,22 +629,22 @@ export default {
   border-radius: 50%;
 }
 
-input:checked + .toggle-slider {
+input:checked+.toggle-slider {
   background-color: var(--primary-color);
 }
 
-input:checked + .toggle-slider:before {
+input:checked+.toggle-slider:before {
   transform: translateX(26px);
   background-color: var(--bg-primary);
 }
 
-.toggle-switch input:disabled + .toggle-slider {
+.toggle-switch input:disabled+.toggle-slider {
   cursor: not-allowed;
   opacity: 0.6;
   background-color: #FF0000;
 }
 
-.toggle-switch input:disabled + .toggle-slider:before {
+.toggle-switch input:disabled+.toggle-slider:before {
   cursor: not-allowed;
   background-color: #FFFFFF;
 }
@@ -657,15 +653,15 @@ input:checked + .toggle-slider:before {
   cursor: not-allowed;
 }
 
-.toggle-switch input:disabled + .toggle-slider:hover {
+.toggle-switch input:disabled+.toggle-slider:hover {
   background-color: #FF0000;
 }
 
-.toggle-switch input:disabled + .toggle-slider:before {
+.toggle-switch input:disabled+.toggle-slider:before {
   transform: translateX(0);
 }
 
-.toggle-switch input:checked:disabled + .toggle-slider:before {
+.toggle-switch input:checked:disabled+.toggle-slider:before {
   transform: translateX(26px);
 }
 
@@ -941,7 +937,8 @@ input:checked + .toggle-slider:before {
   table-layout: fixed;
 }
 
-.matches-table th, .matches-table td {
+.matches-table th,
+.matches-table td {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border-color);
   text-align: left;
@@ -1083,11 +1080,11 @@ input:checked + .toggle-slider:before {
   .file-section {
     grid-template-columns: 1fr;
   }
-  
+
   .parameters-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .action-content {
     flex-direction: column;
     padding: 1.5rem;
@@ -1105,7 +1102,7 @@ input:checked + .toggle-slider:before {
   .match-btn {
     width: 100%;
   }
-  
+
   .progress-container {
     max-width: 100%;
   }

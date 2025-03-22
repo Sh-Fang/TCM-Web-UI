@@ -10,19 +10,11 @@
     <div class="content-container">
       <!-- Tab 切换按钮 -->
       <div class="tab-buttons">
-        <button 
-          class="tab-btn" 
-          :class="{ active: activeTab === 'stream' }"
-          @click="activeTab = 'stream'"
-        >
+        <button class="tab-btn" :class="{ active: activeTab === 'stream' }" @click="activeTab = 'stream'">
           <font-awesome-icon icon="project-diagram" class="tab-icon stream" />
           数据流图分析
         </button>
-        <button 
-          class="tab-btn" 
-          :class="{ active: activeTab === 'query' }"
-          @click="activeTab = 'query'"
-        >
+        <button class="tab-btn" :class="{ active: activeTab === 'query' }" @click="activeTab = 'query'">
           <font-awesome-icon icon="search" class="tab-icon query" />
           查询图分析
         </button>
@@ -39,13 +31,8 @@
             </div>
             <div class="file-content">
               <div class="file-input-wrapper">
-                <input
-                  type="file"
-                  ref="streamGraphInput"
-                  accept=".txt"
-                  style="display: none"
-                  @change="handleStreamGraphSelect"
-                >
+                <input type="file" ref="streamGraphInput" accept=".txt" style="display: none"
+                  @change="handleStreamGraphSelect">
                 <button class="file-select-btn" @click="triggerStreamGraphSelect">
                   <font-awesome-icon icon="folder-open" class="btn-icon" />
                   选择文件
@@ -58,16 +45,10 @@
                 </p>
               </div>
               <div class="analyze-btn-wrapper">
-                <button 
-                  class="analyze-btn" 
-                  :disabled="!streamGraphFile || isStreamAnalyzing"
-                  @click="analyzeStreamGraph"
-                >
-                  <font-awesome-icon 
-                    :icon="isStreamAnalyzing ? 'spinner' : 'chart-bar'" 
-                    :class="{ 'fa-spin': isStreamAnalyzing }" 
-                    class="btn-icon" 
-                  />
+                <button class="analyze-btn" :disabled="!streamGraphFile || isStreamAnalyzing"
+                  @click="analyzeStreamGraph">
+                  <font-awesome-icon :icon="isStreamAnalyzing ? 'spinner' : 'chart-bar'"
+                    :class="{ 'fa-spin': isStreamAnalyzing }" class="btn-icon" />
                   {{ isStreamAnalyzing ? '分析中...' : '开始分析' }}
                 </button>
               </div>
@@ -157,13 +138,8 @@
             </div>
             <div class="file-content">
               <div class="file-input-wrapper">
-                <input
-                  type="file"
-                  ref="queryGraphInput"
-                  accept=".txt"
-                  style="display: none"
-                  @change="handleQueryGraphSelect"
-                >
+                <input type="file" ref="queryGraphInput" accept=".txt" style="display: none"
+                  @change="handleQueryGraphSelect">
                 <button class="file-select-btn" @click="triggerQueryGraphSelect">
                   <font-awesome-icon icon="folder-open" class="btn-icon" />
                   选择文件
@@ -176,16 +152,9 @@
                 </p>
               </div>
               <div class="analyze-btn-wrapper">
-                <button 
-                  class="analyze-btn" 
-                  :disabled="!queryGraphFile || isQueryAnalyzing"
-                  @click="analyzeQueryGraph"
-                >
-                  <font-awesome-icon 
-                    :icon="isQueryAnalyzing ? 'spinner' : 'chart-bar'" 
-                    :class="{ 'fa-spin': isQueryAnalyzing }" 
-                    class="btn-icon" 
-                  />
+                <button class="analyze-btn" :disabled="!queryGraphFile || isQueryAnalyzing" @click="analyzeQueryGraph">
+                  <font-awesome-icon :icon="isQueryAnalyzing ? 'spinner' : 'chart-bar'"
+                    :class="{ 'fa-spin': isQueryAnalyzing }" class="btn-icon" />
                   {{ isQueryAnalyzing ? '分析中...' : '开始分析' }}
                 </button>
               </div>
@@ -263,14 +232,16 @@
                 </div>
 
                 <!-- 偏序关系部分 -->
-                <div v-if="queryGraphInfo.partialOrders && queryGraphInfo.partialOrders.length > 0" class="info-section">
+                <div v-if="queryGraphInfo.partialOrders && queryGraphInfo.partialOrders.length > 0"
+                  class="info-section">
                   <h4 class="section-title">
                     <font-awesome-icon icon="sort" class="section-icon" />
                     偏序关系
                   </h4>
                   <div class="section-content">
                     <div class="partial-orders-list">
-                      <div v-for="(order, index) in queryGraphInfo.partialOrders" :key="index" class="partial-order-item">
+                      <div v-for="(order, index) in queryGraphInfo.partialOrders" :key="index"
+                        class="partial-order-item">
                         <div class="order-header">
                           <span class="order-label">偏序关系 {{ index + 1 }}</span>
                         </div>
@@ -401,10 +372,10 @@ export default {
 
         if (response.status === 200) {
           this.queryGraphInfo = response.data;
-          
+
           // 提取偏序关系
           await this.extractPartialOrders();
-          
+
           const toast = useToast();
           toast.success('分析完成');
         } else {
@@ -421,11 +392,11 @@ export default {
     },
     async extractPartialOrders() {
       if (!this.queryGraphFile) return;
-      
+
       try {
         const text = await this.readFileContent(this.queryGraphFile);
         const lines = text.split('\n');
-        
+
         // 提取以 'b ' 开头的行
         const partialOrders = [];
         for (const line of lines) {
@@ -438,11 +409,11 @@ export default {
             }
           }
         }
-        
+
         // 将偏序关系添加到查询图信息中
         if (!this.queryGraphInfo) this.queryGraphInfo = {};
         this.queryGraphInfo.partialOrders = partialOrders;
-        
+
         console.log('提取的偏序关系:', partialOrders);
       } catch (error) {
         console.error('读取文件内容时出错:', error);
@@ -842,15 +813,15 @@ export default {
   .graph-analysis {
     padding: 1rem;
   }
-  
+
   .section-content.grid-2 {
     grid-template-columns: 1fr;
   }
-  
+
   .tab-buttons {
     flex-direction: column;
   }
-  
+
   .analyze-btn {
     width: 100%;
   }

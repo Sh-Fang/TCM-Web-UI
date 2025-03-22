@@ -6,20 +6,14 @@
         <font-awesome-icon icon="project-diagram" class="auth-logo" />
         <h1>注册账号</h1>
       </div>
-      
+
       <form @submit.prevent="handleRegister" class="auth-form">
         <div class="form-group">
           <label for="name">
             <font-awesome-icon icon="user" class="input-icon" />
             用户名
           </label>
-          <input 
-            type="text" 
-            id="name" 
-            v-model="name" 
-            :class="{'input-error': errors.name}"
-            required
-          >
+          <input type="text" id="name" v-model="name" :class="{ 'input-error': errors.name }" required>
           <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
         </div>
 
@@ -28,28 +22,16 @@
             <font-awesome-icon icon="envelope" class="input-icon" />
             邮箱
           </label>
-          <input 
-            type="email" 
-            id="email" 
-            v-model="email" 
-            :class="{'input-error': errors.email}"
-            required
-          >
+          <input type="email" id="email" v-model="email" :class="{ 'input-error': errors.email }" required>
           <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
         </div>
-        
+
         <div class="form-group">
           <label for="password">
             <font-awesome-icon icon="lock" class="input-icon" />
             密码
           </label>
-          <input 
-            type="password" 
-            id="password" 
-            v-model="password"
-            :class="{'input-error': errors.password}"
-            required
-          >
+          <input type="password" id="password" v-model="password" :class="{ 'input-error': errors.password }" required>
           <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
         </div>
 
@@ -58,24 +40,19 @@
             <font-awesome-icon icon="lock" class="input-icon" />
             确认密码
           </label>
-          <input 
-            type="password" 
-            id="confirmPassword" 
-            v-model="confirmPassword"
-            :class="{'input-error': errors.confirmPassword}"
-            required
-          >
+          <input type="password" id="confirmPassword" v-model="confirmPassword"
+            :class="{ 'input-error': errors.confirmPassword }" required>
           <span v-if="errors.confirmPassword" class="error-message">{{ errors.confirmPassword }}</span>
         </div>
-        
+
         <button type="submit" class="btn-primary">
           <font-awesome-icon icon="user-plus" class="btn-icon" />
           注册
         </button>
       </form>
-      
+
       <p class="auth-redirect">
-        已有账号？ 
+        已有账号？
         <router-link to="/login">
           <font-awesome-icon icon="sign-in-alt" class="link-icon" />
           登录
@@ -143,7 +120,7 @@ export default {
 
           // 注册成功后，跳转到登录页面并传递参数
           toast.success('注册成功，即将跳转到登录页面');
-          
+
           // 使用setTimeout确保toast消息能够显示
           setTimeout(() => {
             this.$router.push({
@@ -159,7 +136,7 @@ export default {
           toast.error('注册失败，请稍后重试');
         }
       } catch (error) {
-        this.errors = { general: '注册失败，请稍后重试' }; 
+        this.errors = { general: '注册失败，请稍后重试' };
         toast.error('注册失败，请稍后重试');
       }
     }
@@ -291,4 +268,4 @@ export default {
 .auth-redirect a:hover {
   text-decoration: underline;
 }
-</style> 
+</style>

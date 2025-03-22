@@ -18,42 +18,22 @@
         <div class="profile-form">
           <div class="form-group">
             <label>姓名</label>
-            <input 
-              type="text" 
-              v-model="userInfo.name" 
-              :disabled="!isEditing"
-              placeholder="请输入您的姓名"
-            >
+            <input type="text" v-model="userInfo.name" :disabled="!isEditing" placeholder="请输入您的姓名">
           </div>
 
           <div class="form-group">
             <label>邮箱</label>
-            <input 
-              type="email" 
-              v-model="userInfo.email" 
-              :disabled="!isEditing"
-              placeholder="请输入您的邮箱"
-            >
+            <input type="email" v-model="userInfo.email" :disabled="!isEditing" placeholder="请输入您的邮箱">
           </div>
 
           <div class="form-group">
             <label>手机号码</label>
-            <input 
-              type="tel" 
-              v-model="userInfo.phone" 
-              :disabled="!isEditing"
-              placeholder="请输入您的手机号码"
-            >
+            <input type="tel" v-model="userInfo.phone" :disabled="!isEditing" placeholder="请输入您的手机号码">
           </div>
 
           <div class="form-group">
             <label>个人简介</label>
-            <textarea 
-              v-model="userInfo.bio" 
-              :disabled="!isEditing"
-              placeholder="请输入您的个人简介"
-              rows="4"
-            ></textarea>
+            <textarea v-model="userInfo.bio" :disabled="!isEditing" placeholder="请输入您的个人简介" rows="4"></textarea>
           </div>
         </div>
       </div>
@@ -70,32 +50,19 @@
         <div class="profile-form">
           <div class="form-group">
             <label>当前密码</label>
-            <input 
-              type="password" 
-              v-model="password.currentPassword" 
-              :disabled="!isPasswordEditing"
-              placeholder="请输入当前密码"
-            >
+            <input type="password" v-model="password.currentPassword" :disabled="!isPasswordEditing"
+              placeholder="请输入当前密码">
           </div>
 
           <div class="form-group">
             <label>新密码</label>
-            <input 
-              type="password" 
-              v-model="password.newPassword" 
-              :disabled="!isPasswordEditing"
-              placeholder="请输入新密码"
-            >
+            <input type="password" v-model="password.newPassword" :disabled="!isPasswordEditing" placeholder="请输入新密码">
           </div>
 
           <div class="form-group">
             <label>确认新密码</label>
-            <input 
-              type="password" 
-              v-model="password.confirmPassword" 
-              :disabled="!isPasswordEditing"
-              placeholder="请再次输入新密码"
-            >
+            <input type="password" v-model="password.confirmPassword" :disabled="!isPasswordEditing"
+              placeholder="请再次输入新密码">
           </div>
         </div>
       </div>
@@ -352,4 +319,4 @@ export default {
   opacity: 0.5;
   cursor: not-allowed;
 }
-</style> 
+</style>

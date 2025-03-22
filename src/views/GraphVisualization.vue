@@ -1,7 +1,7 @@
 <template>
   <div class="graph-visualization">
     <h1 class="page-title">图形可视化</h1>
-    
+
     <!-- Toast提示 -->
     <div v-if="toast.show" class="toast" :class="toast.type">
       <font-awesome-icon :icon="toast.icon" class="toast-icon" />
@@ -18,25 +18,17 @@
 
     <div class="tabs-container">
       <div class="tabs">
-        <div 
-          class="tab" 
-          :class="{ active: activeTab === 'data' }" 
-          @click="activeTab = 'data'"
-        >
+        <div class="tab" :class="{ active: activeTab === 'data' }" @click="activeTab = 'data'">
           <font-awesome-icon icon="project-diagram" class="tab-icon" />
           数据图
         </div>
-        <div 
-          class="tab" 
-          :class="{ active: activeTab === 'query' }" 
-          @click="activeTab = 'query'"
-        >
+        <div class="tab" :class="{ active: activeTab === 'query' }" @click="activeTab = 'query'">
           <font-awesome-icon icon="search" class="tab-icon" />
           查询图
         </div>
       </div>
     </div>
-    
+
     <div class="tab-content">
       <!-- 数据图上传区域 -->
       <div v-if="activeTab === 'data'" class="upload-section">
@@ -47,13 +39,7 @@
           </div>
           <div class="file-content">
             <div class="file-input-wrapper">
-              <input
-                type="file"
-                ref="dataFileInput"
-                accept=".txt"
-                style="display: none"
-                @change="handleDataFileSelect"
-              >
+              <input type="file" ref="dataFileInput" accept=".txt" style="display: none" @change="handleDataFileSelect">
               <button class="file-select-btn" @click="triggerDataFileSelect">
                 <font-awesome-icon icon="folder-open" class="btn-icon" />
                 选择文件
@@ -66,11 +52,7 @@
               </p>
             </div>
             <div class="visualize-btn-wrapper">
-              <button 
-                class="visualize-btn" 
-                :disabled="!dataFile || !parsedDataGraph"
-                @click="visualizeDataGraph"
-              >
+              <button class="visualize-btn" :disabled="!dataFile || !parsedDataGraph" @click="visualizeDataGraph">
                 <font-awesome-icon icon="chart-line" class="btn-icon" />
                 可视化数据图
               </button>
@@ -78,7 +60,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- 查询图上传区域 -->
       <div v-if="activeTab === 'query'" class="upload-section">
         <div class="file-card">
@@ -88,13 +70,8 @@
           </div>
           <div class="file-content">
             <div class="file-input-wrapper">
-              <input
-                type="file"
-                ref="queryFileInput"
-                accept=".txt"
-                style="display: none"
-                @change="handleQueryFileSelect"
-              >
+              <input type="file" ref="queryFileInput" accept=".txt" style="display: none"
+                @change="handleQueryFileSelect">
               <button class="file-select-btn" @click="triggerQueryFileSelect">
                 <font-awesome-icon icon="folder-open" class="btn-icon" />
                 选择文件
@@ -107,11 +84,7 @@
               </p>
             </div>
             <div class="visualize-btn-wrapper">
-              <button 
-                class="visualize-btn" 
-                :disabled="!queryFile || !parsedQueryGraph"
-                @click="visualizeQueryGraph"
-              >
+              <button class="visualize-btn" :disabled="!queryFile || !parsedQueryGraph" @click="visualizeQueryGraph">
                 <font-awesome-icon icon="chart-line" class="btn-icon" />
                 可视化查询图
               </button>
@@ -120,7 +93,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- 可视化区域 -->
     <div class="visualization-container">
       <!-- 数据图可视化区域 -->
@@ -129,14 +102,14 @@
           <!-- 这里将由您实现数据图可视化 -->
         </div>
       </div>
-      
+
       <!-- 查询图可视化区域 -->
       <div v-show="activeTab === 'query' && queryGraphVisualized" class="graph-display">
         <div id="query-graph-container" class="graph-canvas">
           <!-- 这里将由您实现查询图可视化 -->
         </div>
       </div>
-      
+
       <!-- 空状态提示 -->
       <div v-show="activeTab === 'data' && !dataGraphVisualized" class="empty-state">
         <font-awesome-icon icon="project-diagram" size="3x" class="empty-icon" />
@@ -157,15 +130,15 @@ export default {
     return {
       // 标签页状态，'data'表示数据图，'query'表示查询图
       activeTab: 'data',
-      
+
       // 图形是否已经可视化的标志
       dataGraphVisualized: false,
       queryGraphVisualized: false,
-      
+
       // 用户选择的文件对象
       dataFile: null,
       queryFile: null,
-      
+
       // 解析后的图数据，包含节点和边的信息
       parsedDataGraph: null,
       parsedQueryGraph: null,
@@ -232,11 +205,11 @@ export default {
     // 格式化文件大小显示
     formatFileSize(bytes) {
       if (bytes === 0) return '0 B';
-      
+
       const k = 1024;
       const sizes = ['B', 'KB', 'MB', 'GB'];
       const i = Math.floor(Math.log(bytes) / Math.log(k));
-      
+
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     },
 
@@ -244,12 +217,12 @@ export default {
     triggerDataFileSelect() {
       this.$refs.dataFileInput.click();
     },
-    
+
     // 触发查询图文件选择框
     triggerQueryFileSelect() {
       this.$refs.queryFileInput.click();
     },
-    
+
     // 处理数据图文件选择，开始解析文件
     handleDataFileSelect(event) {
       const file = event.target.files[0];
@@ -260,7 +233,7 @@ export default {
         this.parseDataFile(file);
       }
     },
-    
+
     // 处理查询图文件选择，开始解析文件
     handleQueryFileSelect(event) {
       const file = event.target.files[0];
@@ -271,18 +244,18 @@ export default {
         this.parseQueryFile(file);
       }
     },
-    
+
     // 解析数据图文件，使用FileReader读取文件内容
     parseDataFile(file) {
       const fileReader = new FileReader();
-      
+
       // 文件读取完成后的处理
       fileReader.onload = (e) => {
         try {
           const fileContent = e.target.result;
           this.parsedDataGraph = this.parseDataTXT(fileContent);
           console.log('数据图TXT解析成功:', this.parsedDataGraph);
-          
+
           // 解析失败时重置状态
           if (this.parsedDataGraph === null) {
             this.dataFile = null;
@@ -298,7 +271,7 @@ export default {
           this.isParsingFile = false;
         }
       };
-      
+
       // 文件读取错误处理
       fileReader.onerror = () => {
         console.error('读取数据图文件失败');
@@ -307,20 +280,20 @@ export default {
         this.$refs.dataFileInput.value = '';
         this.isParsingFile = false;
       };
-      
+
       fileReader.readAsText(file);
     },
-    
+
     // 解析查询图文件，使用FileReader读取文件内容
     parseQueryFile(file) {
       const fileReader = new FileReader();
-      
+
       fileReader.onload = (e) => {
         try {
           const fileContent = e.target.result;
           this.parsedQueryGraph = this.parseQueryTXT(fileContent);
           console.log('查询图TXT解析成功:', this.parsedQueryGraph);
-          
+
           if (this.parsedQueryGraph === null) {
             this.queryFile = null;
             this.$refs.queryFileInput.value = '';
@@ -334,7 +307,7 @@ export default {
           this.isParsingFile = false;
         }
       };
-      
+
       fileReader.onerror = () => {
         console.error('读取查询图文件失败');
         this.parsedQueryGraph = null;
@@ -342,7 +315,7 @@ export default {
         this.$refs.queryFileInput.value = '';
         this.isParsingFile = false;
       };
-      
+
       fileReader.readAsText(file);
     },
 
@@ -393,13 +366,13 @@ export default {
       const nodes = new Map();
       const edges = [];
       const connectedNodes = new Set();  // 记录有连接的节点
-      
+
       // 限制最大行数为100
       const maxLines = 100;
       if (lines.length > maxLines) {
         this.showToast('数据图文件超过' + maxLines + '行，仅解析前' + maxLines + '行数据', 'info');
       }
-      
+
       // 解析每一行数据
       for (let i = 0; i < maxLines && i < lines.length; i++) {
         const line = lines[i];
@@ -470,7 +443,7 @@ export default {
 
       const nodes = new Map();
       const edges = [];
-      
+
       // 解析每一行数据
       for (const line of lines) {
         const parts = line.trim().split(' ');
@@ -504,17 +477,17 @@ export default {
         edges: edges
       };
     },
-    
+
     // 可视化数据图，创建G6实例并渲染
     visualizeDataGraph() {
       if (!this.dataFile || !this.parsedDataGraph) {
         console.error('没有可用的数据图数据');
         return;
       }
-      
+
       console.log('开始可视化数据图:', this.parsedDataGraph);
       this.dataGraphVisualized = true;
-      
+
       this.$nextTick(() => {
         const container = document.getElementById('data-graph-container');
         if (container) {
@@ -569,7 +542,7 @@ export default {
         console.error('没有可用的查询图数据');
         return;
       }
-      
+
       this.queryGraphVisualized = true;
 
       this.$nextTick(() => {
@@ -623,7 +596,7 @@ export default {
         }
       });
     },
-  
+
   }
 }
 </script>
@@ -870,7 +843,7 @@ export default {
   justify-content: center;
 }
 
-.placeholder-info > div {
+.placeholder-info>div {
   background-color: var(--bg-secondary);
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
@@ -927,8 +900,13 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-text {
@@ -997,6 +975,7 @@ export default {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -1007,7 +986,7 @@ export default {
   .graph-visualization {
     padding: 1rem;
   }
-  
+
   .visualize-btn {
     width: 100%;
   }

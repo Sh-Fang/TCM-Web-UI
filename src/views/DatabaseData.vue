@@ -3,17 +3,13 @@
     <h1>数据库数据</h1>
     <div class="data-container">
       <div class="tabs">
-        <div 
-          v-for="tab in tabs" 
-          :key="tab.id" 
-          :class="['tab', { active: activeTab === tab.id }]"
-          @click="activeTab = tab.id"
-        >
+        <div v-for="tab in tabs" :key="tab.id" :class="['tab', { active: activeTab === tab.id }]"
+          @click="activeTab = tab.id">
           <font-awesome-icon :icon="tab.icon" />
           {{ tab.name }}
         </div>
       </div>
-      
+
       <div class="tab-content">
         <!-- 数据集表格 -->
         <div v-if="activeTab === 'datasets'" class="table-container">
@@ -43,7 +39,7 @@
             </tbody>
           </table>
         </div>
-        
+
         <!-- 数据图表格 -->
         <div v-if="activeTab === 'data_graphs'" class="table-container">
           <h2><font-awesome-icon icon="project-diagram" /> 数据图列表</h2>
@@ -88,7 +84,7 @@
             </tbody>
           </table>
         </div>
-        
+
         <!-- 查询图表格 -->
         <div v-if="activeTab === 'query_graphs'" class="table-container">
           <h2><font-awesome-icon icon="search" /> 查询图列表</h2>
@@ -168,7 +164,7 @@
                 <span class="detail-value">{{ selectedItem.created_at }}</span>
               </div>
             </div>
-            
+
             <div class="detail-section">
               <h4><font-awesome-icon icon="chart-pie" /> 数据汇总</h4>
               <div class="stats-grid">
@@ -199,14 +195,14 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="detail-section">
               <h4><font-awesome-icon icon="sticky-note" /> 备注信息</h4>
               <div class="notes-box">
                 {{ selectedItem.notes }}
               </div>
             </div>
-            
+
             <div class="detail-section">
               <h4><font-awesome-icon icon="project-diagram" /> 相关数据图</h4>
               <ul class="related-items">
@@ -217,7 +213,7 @@
                 </li>
               </ul>
             </div>
-            
+
             <div class="detail-section">
               <h4><font-awesome-icon icon="search" /> 相关查询图</h4>
               <ul class="related-items">
@@ -229,7 +225,7 @@
               </ul>
             </div>
           </div>
-          
+
           <!-- 数据图详情 -->
           <div v-if="modalType === 'data_graph' && selectedItem">
             <div class="detail-section">
@@ -255,7 +251,7 @@
                 <span class="detail-value">{{ selectedItem.uploaded_at }}</span>
               </div>
             </div>
-            
+
             <div class="detail-section">
               <h4><font-awesome-icon icon="chart-bar" /> 图结构信息</h4>
               <div class="stats-grid">
@@ -291,7 +287,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="graph-preview">
               <h4><font-awesome-icon icon="eye" /> 图预览</h4>
               <div class="graph-placeholder">
@@ -303,7 +299,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- 查询图详情 -->
           <div v-if="modalType === 'query_graph' && selectedItem">
             <div class="detail-section">
@@ -337,12 +333,12 @@
                 <span class="detail-value">{{ selectedItem.edge_count }}</span>
               </div>
             </div>
-            
+
             <div class="detail-section" v-if="selectedItem.graph_data">
               <h4><font-awesome-icon icon="code" /> 查询图数据</h4>
               <pre class="code-block">{{ formatJson(selectedItem.graph_data) }}</pre>
             </div>
-            
+
             <div class="graph-preview">
               <h4><font-awesome-icon icon="eye" /> 图预览</h4>
               <div class="graph-placeholder">
@@ -374,10 +370,10 @@ export default {
       ],
       // 假数据
       datasets: [
-        { 
-          id: 1, 
-          name: 'A', 
-          description: '数据集A的描述信息', 
+        {
+          id: 1,
+          name: 'A',
+          description: '数据集A的描述信息',
           created_at: '2023-05-10',
           notes: '这是一个用于测试的数据集，包含了基本的图结构和查询示例',
           data_graph_count: 1,
@@ -386,10 +382,10 @@ export default {
           total_edges: 4200,
           avg_degree: 5.6
         },
-        { 
-          id: 2, 
-          name: 'B', 
-          description: '数据集B的描述信息', 
+        {
+          id: 2,
+          name: 'B',
+          description: '数据集B的描述信息',
           created_at: '2023-05-15',
           notes: '这个数据集包含了更复杂的图结构，适合高级查询测试',
           data_graph_count: 1,
@@ -398,10 +394,10 @@ export default {
           total_edges: 9100,
           avg_degree: 6.5
         },
-        { 
-          id: 3, 
-          name: 'C', 
-          description: '数据集C的描述信息', 
+        {
+          id: 3,
+          name: 'C',
+          description: '数据集C的描述信息',
           created_at: '2023-06-01',
           notes: '这是一个小型数据集，适合快速测试和验证',
           data_graph_count: 1,
@@ -410,10 +406,10 @@ export default {
           total_edges: 2100,
           avg_degree: 5.25
         },
-        { 
-          id: 4, 
-          name: 'D', 
-          description: '数据集D的描述信息', 
+        {
+          id: 4,
+          name: 'D',
+          description: '数据集D的描述信息',
           created_at: '2023-06-20',
           notes: '这是最新的数据集，包含了最新的图结构和查询模式',
           data_graph_count: 1,
@@ -424,10 +420,10 @@ export default {
         }
       ],
       dataGraphs: [
-        { 
-          id: 1, 
-          dataset_id: 1, 
-          file_path: '/data/A/data_graph.json', 
+        {
+          id: 1,
+          dataset_id: 1,
+          file_path: '/data/A/data_graph.json',
           file_size: 15728640, // 15MB
           uploaded_at: '2023-05-10',
           node_count: 1500,
@@ -437,10 +433,10 @@ export default {
           graph_diameter: 12,
           connected_components: 1
         },
-        { 
-          id: 2, 
-          dataset_id: 2, 
-          file_path: '/data/B/data_graph.json', 
+        {
+          id: 2,
+          dataset_id: 2,
+          file_path: '/data/B/data_graph.json',
           file_size: 31457280, // 30MB
           uploaded_at: '2023-05-15',
           node_count: 2800,
@@ -450,10 +446,10 @@ export default {
           graph_diameter: 15,
           connected_components: 1
         },
-        { 
-          id: 3, 
-          dataset_id: 3, 
-          file_path: '/data/C/data_graph.json', 
+        {
+          id: 3,
+          dataset_id: 3,
+          file_path: '/data/C/data_graph.json',
           file_size: 8388608, // 8MB
           uploaded_at: '2023-06-01',
           node_count: 800,
@@ -463,10 +459,10 @@ export default {
           graph_diameter: 9,
           connected_components: 2
         },
-        { 
-          id: 4, 
-          dataset_id: 4, 
-          file_path: '/data/D/data_graph.json', 
+        {
+          id: 4,
+          dataset_id: 4,
+          file_path: '/data/D/data_graph.json',
           file_size: 41943040, // 40MB
           uploaded_at: '2023-06-20',
           node_count: 3500,
@@ -478,10 +474,10 @@ export default {
         }
       ],
       queryGraphs: [
-        { 
-          id: 1, 
-          dataset_id: 1, 
-          file_path: '/data/A/query_graph_1.json', 
+        {
+          id: 1,
+          dataset_id: 1,
+          file_path: '/data/A/query_graph_1.json',
           file_size: 2048, // 2KB
           uploaded_at: '2023-05-10',
           node_count: 5,
@@ -505,10 +501,10 @@ export default {
   ]
 }`
         },
-        { 
-          id: 2, 
-          dataset_id: 1, 
-          file_path: '/data/A/query_graph_2.json', 
+        {
+          id: 2,
+          dataset_id: 1,
+          file_path: '/data/A/query_graph_2.json',
           file_size: 1536, // 1.5KB
           uploaded_at: '2023-05-10',
           node_count: 4,
@@ -616,7 +612,7 @@ export default {
       }
     },
     getModalIcon() {
-      switch(this.modalType) {
+      switch (this.modalType) {
         case 'dataset':
           return ['fas', 'database'];
         case 'data_graph':
@@ -629,22 +625,22 @@ export default {
     },
     formatFileSize(bytes) {
       if (!bytes || bytes === 0) return '未知';
-      
+
       const units = ['B', 'KB', 'MB', 'GB', 'TB'];
       let size = bytes;
       let unitIndex = 0;
-      
+
       while (size >= 1024 && unitIndex < units.length - 1) {
         size /= 1024;
         unitIndex++;
       }
-      
+
       return `${size.toFixed(2)} ${units[unitIndex]}`;
     },
     downloadGraph(id, type) {
       let graph;
       let fileName;
-      
+
       if (type === 'data_graph') {
         graph = this.dataGraphs.find(g => g.id === id);
         fileName = graph ? graph.file_path.split('/').pop() : `data_graph_${id}.json`;
@@ -652,7 +648,7 @@ export default {
         graph = this.queryGraphs.find(g => g.id === id);
         fileName = graph ? graph.file_path.split('/').pop() : `query_graph_${id}.json`;
       }
-      
+
       if (graph) {
         // 在实际应用中，这里应该是从服务器下载文件
         // 目前使用模拟下载

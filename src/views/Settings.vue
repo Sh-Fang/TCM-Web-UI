@@ -16,30 +16,15 @@
             <label>主题模式</label>
             <div class="radio-group">
               <label class="radio-label">
-                <input 
-                  type="radio" 
-                  v-model="settings.theme" 
-                  value="light"
-                  @change="handleThemeChange"
-                >
+                <input type="radio" v-model="settings.theme" value="light" @change="handleThemeChange">
                 <span>浅色</span>
               </label>
               <label class="radio-label">
-                <input 
-                  type="radio" 
-                  v-model="settings.theme" 
-                  value="dark"
-                  @change="handleThemeChange"
-                >
+                <input type="radio" v-model="settings.theme" value="dark" @change="handleThemeChange">
                 <span>深色</span>
               </label>
               <label class="radio-label">
-                <input 
-                  type="radio" 
-                  v-model="settings.theme" 
-                  value="system"
-                  @change="handleThemeChange"
-                >
+                <input type="radio" v-model="settings.theme" value="system" @change="handleThemeChange">
                 <span>跟随系统</span>
               </label>
             </div>
@@ -49,11 +34,7 @@
             <label>侧边栏默认展开</label>
             <div class="toggle-group">
               <label class="toggle-label">
-                <input 
-                  type="checkbox" 
-                  v-model="settings.sidebarExpanded"
-                  @change="handleSidebarChange"
-                >
+                <input type="checkbox" v-model="settings.sidebarExpanded" @change="handleSidebarChange">
                 <span class="toggle-slider"></span>
               </label>
             </div>
@@ -106,7 +87,7 @@ export default {
     handleThemeChange() {
       // 保存设置到localStorage
       localStorage.setItem('theme', this.settings.theme)
-      
+
       // 如果是system，添加监听器
       if (this.settings.theme === 'system') {
         this.addSystemThemeListener()
@@ -119,7 +100,7 @@ export default {
         // 直接应用选择的主题
         document.documentElement.setAttribute('data-theme', this.settings.theme)
       }
-      
+
       this.toast.success('主题设置已更新')
     },
     handleSidebarChange() {
@@ -266,11 +247,11 @@ export default {
   border-radius: 50%;
 }
 
-input:checked + .toggle-slider {
+input:checked+.toggle-slider {
   background-color: var(--primary-color);
 }
 
-input:checked + .toggle-slider:before {
+input:checked+.toggle-slider:before {
   transform: translateX(1.5rem);
 }
-</style> 
+</style>

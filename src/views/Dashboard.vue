@@ -5,7 +5,7 @@
         <font-awesome-icon icon="project-diagram" class="app-logo" />
         <span v-if="!isSidebarCollapsed" class="app-name">子图匹配系统</span>
       </div>
-      
+
       <nav class="dashboard-nav">
         <router-link to="/graph-visualization" class="nav-item">
           <font-awesome-icon icon="project-diagram" class="nav-icon" />
@@ -65,7 +65,7 @@
             <span class="user-name">{{ userInfo.name }}</span>
             <font-awesome-icon :icon="isUserMenuOpen ? 'chevron-up' : 'chevron-down'" class="chevron-icon" />
           </div>
-          
+
           <!-- 用户信息下拉菜单 -->
           <div v-if="isUserMenuOpen" class="user-menu" @click.stop>
             <div class="menu-header">
@@ -96,7 +96,7 @@
           </div>
         </div>
       </header>
-      
+
       <main class="content-area">
         <router-view></router-view>
       </main>
@@ -313,7 +313,7 @@ export default {
   background-color: var(--bg-primary);
 }
 
-.sidebar-collapsed + .main-content {
+.sidebar-collapsed+.main-content {
   margin-left: 80px;
 }
 
@@ -551,4 +551,4 @@ export default {
 .btn-confirm:hover {
   background-color: #dc2626;
 }
-</style> 
+</style>
