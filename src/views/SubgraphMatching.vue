@@ -140,15 +140,6 @@
       <!-- 执行匹配 -->
       <div class="action-card">
         <div class="action-content">
-          <div class="action-left">
-            <div class="output-settings">
-              <label class="parameter-label">输出格式</label>
-              <select v-model="matchParams.outputFormat" class="parameter-select">
-                <option value="JSON">JSON</option>
-                <option value="TXT">TXT</option>
-              </select>
-            </div>
-          </div>
           <button class="match-btn" :disabled="!canStartMatching || isMatching" @click="startMatching">
             <font-awesome-icon :icon="isMatching ? 'spinner' : 'play'" :class="{ 'fa-spin': isMatching }"
               class="btn-icon" />
@@ -243,6 +234,13 @@
           </div>
 
           <div class="results-actions">
+            <div class="output-format-selector">
+              <label class="parameter-label">输出格式</label>
+              <select v-model="matchParams.outputFormat" class="parameter-select">
+                <option value="JSON">JSON</option>
+                <option value="TXT">TXT</option>
+              </select>
+            </div>
             <button class="action-btn download-btn" @click="downloadResults">
               <font-awesome-icon icon="download" class="btn-icon" />
               下载结果
@@ -389,7 +387,89 @@ export default {
       }
     },
     downloadResults() {
-      console.log("downloadResults");
+      try {
+        if (!this.matchResults) {
+          const toast = useToast();
+          toast.error('没有可下载的匹配结果');
+          return;
+        }
+
+        let content;
+        let filename;
+        let mimeType;
+
+        if (this.matchParams.outputFormat === 'JSON') {
+          // JSON格式
+          content = JSON.stringify(this.matchResults, null, 2);
+          filename = 'subgraph_matching_results.json';
+          mimeType = 'application/json';
+        } else {
+          // TXT格式
+          const txtContent = [];
+          
+          // 添加统计信息
+          txtContent.push('=== 匹配统计信息 ===');
+          txtContent.push(`匹配总数: ${this.matchResults.statistical_info.match_count}`);
+          txtContent.push(`索引构建时间: ${this.matchResults.statistical_info.index_time} ms`);
+          txtContent.push(`查询匹配时间: ${this.matchResults.statistical_info.online_time} ms`);
+          txtContent.push(`内存使用: ${this.matchResults.statistical_info.memory_use} MB`);
+          txtContent.push(`数据流图边数: ${this.matchResults.statistical_info.total_s_edges}`);
+          txtContent.push(`查询图边数: ${this.matchResults.statistical_info.total_q_edges}`);
+          txtContent.push(`有效边占比: ${this.matchResults.statistical_info.valid_percentage}%`);
+          txtContent.push('\n');
+
+          // 添加匹配结果
+          if (this.matchResults.all_match_result?.all_match_result) {
+            txtContent.push('=== 匹配详情 ===');
+            this.matchResults.all_match_result.all_match_result.forEach((match, index) => {
+              txtContent.push(`\n匹配 #${index + 1}`);
+              match.forEach((edge, edgeIndex) => {
+                txtContent.push(`  边 ${edgeIndex + 1}:`);
+                txtContent.push(`    源节点ID: ${edge.src_id}`);
+                txtContent.push(`    目标节点ID: ${edge.tar_id}`);
+                txtContent.push(`    边标签: ${edge.e_lab}`);
+                txtContent.push(`    源节点标签: ${edge.src_lab}`);
+                txtContent.push(`    目标节点标签: ${edge.tar_lab}`);
+                txtContent.push(`    时间戳: ${edge.timestamp}`);
+              });
+            });
+          }
+
+          // 添加匹配结果（纯数字格式）
+          txtContent.push('\n\n=== 匹配详情2 ===');
+          this.matchResults.all_match_result.all_match_result.forEach((match, index) => {
+            const numericFormat = match.map(edge => 
+              `(${edge.src_id} ${edge.tar_id} ${edge.e_lab} ${edge.src_lab} ${edge.tar_lab} ${edge.timestamp})`
+            ).join(' ');
+            txtContent.push(`\n匹配 #${index + 1}:`);
+            txtContent.push(numericFormat);
+          });
+
+          content = txtContent.join('\n');
+          filename = 'subgraph_matching_results.txt';
+          mimeType = 'text/plain';
+        }
+
+        // 创建Blob对象并下载
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        
+        // 清理
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        const toast = useToast();
+        toast.success('文件下载成功');
+      } catch (error) {
+        console.error('下载结果时出错:', error);
+        const toast = useToast();
+        toast.error('下载结果时发生错误');
+      }
     }
   },
   beforeUnmount() {
@@ -701,8 +781,7 @@ input:checked+.toggle-slider:before {
 .action-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+  justify-content: center;
   padding: 1.5rem 2rem;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -1033,7 +1112,37 @@ input:checked+.toggle-slider:before {
 
 .results-actions {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: var(--bg-secondary);
+  border-radius: 0.375rem;
+  border: 1px solid var(--border-color);
+}
+
+.output-format-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.output-format-selector .parameter-label {
+  margin: 0;
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.output-format-selector .parameter-select {
+  width: 120px;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background-color: var(--card-bg);
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  border-color: var(--border-color);
+  transition: all 0.2s ease;
 }
 
 .action-btn {
@@ -1051,6 +1160,17 @@ input:checked+.toggle-slider:before {
   background-color: var(--success-color);
   border: none;
   color: var(--text-inverse);
+}
+
+.download-btn:hover {
+  background-color: var(--success-color-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--success-color-rgb), 0.3);
+}
+
+.download-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(var(--success-color-rgb), 0.2);
 }
 
 .output-note {
@@ -1105,6 +1225,26 @@ input:checked+.toggle-slider:before {
 
   .progress-container {
     max-width: 100%;
+  }
+
+  .results-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .output-format-selector {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .output-format-selector .parameter-select {
+    width: 150px;
+  }
+
+  .download-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>
