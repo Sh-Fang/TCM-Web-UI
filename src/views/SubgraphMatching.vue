@@ -215,7 +215,7 @@
                   <thead>
                     <tr>
                       <th class="id-column">ID</th>
-                      <th v-for="(_, index) in matchResults.all_match_result.all_match_result" :key="index">
+                      <th v-for="(_, index) in parseInt(matchResults.statistical_info.total_q_edges)" :key="index">
                         QID {{ index + 1 }}
                       </th>
                     </tr>
@@ -357,7 +357,7 @@ export default {
         // 每秒查询一次进度
         const progressInterval = setInterval(async () => {
           try {
-            const progressResponse = await axios.get('http://localhost:8082/progress');
+            const progressResponse = await axios.get('http://localhost:8082/getSubgraphMatchingProgress');
             if (progressResponse.status === 200) {
               console.log(progressResponse.data.progress);
               this.matchProgress = parseInt(progressResponse.data.progress) || 0;
@@ -367,7 +367,7 @@ export default {
           }
         }, 500); // 每秒查询一次进度
 
-        const response = await axios.post('http://localhost:8082/match', formData, {
+        const response = await axios.post('http://localhost:8082/subgraphMatching', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
