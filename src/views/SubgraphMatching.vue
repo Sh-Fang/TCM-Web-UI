@@ -355,7 +355,7 @@ export default {
         // 每秒查询一次进度
         const progressInterval = setInterval(async () => {
           try {
-            const progressResponse = await axios.get('http://localhost:8082/getSubgraphMatchingProgress');
+            const progressResponse = await axios.get('http://localhost:8082/match/getSubgraphMatchProgress');
             if (progressResponse.status === 200) {
               console.log(progressResponse.data.progress);
               this.matchProgress = parseInt(progressResponse.data.progress) || 0;
@@ -365,7 +365,7 @@ export default {
           }
         }, 500); // 每秒查询一次进度
 
-        const response = await axios.post('http://localhost:8082/subgraphMatching', formData, {
+        const response = await axios.post('http://localhost:8082/match/subgraphMatch', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -406,7 +406,7 @@ export default {
         } else {
           // TXT格式
           const txtContent = [];
-          
+
           // 添加统计信息
           txtContent.push('=== 匹配统计信息 ===');
           txtContent.push(`匹配总数: ${this.matchResults.statistical_info.match_count}`);
@@ -438,7 +438,7 @@ export default {
           // 添加匹配结果（纯数字格式）
           txtContent.push('\n\n=== 匹配详情2 ===');
           this.matchResults.all_match_result.all_match_result.forEach((match, index) => {
-            const numericFormat = match.map(edge => 
+            const numericFormat = match.map(edge =>
               `(${edge.src_id} ${edge.tar_id} ${edge.e_lab} ${edge.src_lab} ${edge.tar_lab} ${edge.timestamp})`
             ).join(' ');
             txtContent.push(`\n匹配 #${index + 1}:`);
@@ -458,7 +458,7 @@ export default {
         link.download = filename;
         document.body.appendChild(link);
         link.click();
-        
+
         // 清理
         document.body.removeChild(link);
         URL.revokeObjectURL(url);

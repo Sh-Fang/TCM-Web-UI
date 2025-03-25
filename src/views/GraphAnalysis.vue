@@ -333,7 +333,7 @@ export default {
       formData.append('streamGraph', this.streamGraphFile);
 
       try {
-        const response = await axios.post('http://localhost:8082/analyzeStreamGraph', formData, {
+        const response = await axios.post('http://localhost:8082/analyze/streamGraph', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -364,7 +364,7 @@ export default {
       formData.append('queryGraph', this.queryGraphFile);
 
       try {
-        const response = await axios.post('http://localhost:8082/analyzeQueryGraph', formData, {
+        const response = await axios.post('http://localhost:8082/analyze/queryGraph', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

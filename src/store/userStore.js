@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     async updateUserProfile(profileData) {
       try {
-        const response = await axios.post('http://localhost:8082/updateUserProfile', profileData)
+        const response = await axios.post('http://localhost:8082/auth/updateUserProfile', profileData)
         console.log(response.data)
         if (response.data.code === 200) {
           this.userData = response.data.data // 更新 userData
@@ -28,7 +28,7 @@ export const useUserStore = defineStore('user', {
 
     async updatePassword(passwordData) {
       try {
-        const response = await axios.post('http://localhost:8082/updateUserPassword', {
+        const response = await axios.post('http://localhost:8082/auth/updateUserPassword', {
           email: this.userData.email,
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword

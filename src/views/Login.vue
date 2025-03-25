@@ -100,7 +100,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:8082/login', {
+        const response = await axios.post('http://localhost:8082/auth/login', {
           email: this.email,
           password: this.password
         });
